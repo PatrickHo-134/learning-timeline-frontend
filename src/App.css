@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+/* styles for ReactQuill */
+
+.quill {
+  overflow-y: auto;
+}
+
+.quill.add-learning-note-content .ql-container .ql-editor {
+  min-height: 10rem;
+  max-height: 25rem;
+}
+
+.quill.edit-learning-note-content .ql-container .ql-editor {
+  min-height: 10rem;
+  max-height: 25rem;
+}
