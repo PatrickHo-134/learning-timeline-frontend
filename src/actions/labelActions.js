@@ -1,4 +1,5 @@
 import axios from "axios";
+import { apiBaseUrl } from "../appConfig";
 
 export const LABELS_FETCH_REQUEST = "LABELS_FETCH_REQUEST";
 export const LABELS_FETCH_SUCCESS = "LABELS_FETCH_SUCCESS";
@@ -15,7 +16,7 @@ export const fetchLabels = (userInfo) => async (dispatch) => {
   try {
     dispatch({ type: LABELS_FETCH_REQUEST });
 
-    const { data } = await axios.get(`/api/labels/${userInfo.id}/`, {
+    const { data } = await axios.get(`${apiBaseUrl}/api/labels/${userInfo.id}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +52,7 @@ export const createLabel = (labelData, userInfo) => async (dispatch) => {
     dispatch(createLabelRequest());
 
     const { data } = await axios.post(
-      `/api/labels/create/`,
+      `${apiBaseUrl}/api/labels/create/`,
       labelData,
       config
     );
@@ -82,7 +83,7 @@ export const deleteLabel = (labelId) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`/api/labels/delete-label/${labelId}/`, config);
+    await axios.delete(`${apiBaseUrl}/api/labels/delete-label/${labelId}/`, config);
 
     dispatch({
       type: LABEL_DELETE_SUSSCESS,

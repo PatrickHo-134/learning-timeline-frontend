@@ -2,7 +2,6 @@
   "name": "learning-timeline",
   "version": "0.1.0",
   "private": true,
-  "proxy":"http://localhost:8000/",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -28,6 +27,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
+    "serve": "^14.2.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

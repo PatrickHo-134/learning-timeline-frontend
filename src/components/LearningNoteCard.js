@@ -11,10 +11,7 @@ import {
   Popover,
   Typography,
 } from "@mui/material";
-import {
-  Add as AddIcon,
-  MoreVert as MoreVertIcon,
-} from "@mui/icons-material";
+import { Add as AddIcon, MoreVert as MoreVertIcon } from "@mui/icons-material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import InfoIcon from "@mui/icons-material/Info";
@@ -133,7 +130,7 @@ const LearningNoteCard = ({ learningNote }) => {
             flexWrap: "wrap",
           }}
         >
-          {labels && labelList ? (
+          {Array.isArray(labels) && labels.length > 0 ? (
             labels.map((labelId) => (
               <LearningNoteLabel
                 key={labelId}

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { apiBaseUrl } from "../appConfig";
 
 // user login
 
@@ -30,9 +31,8 @@ export const login = (email, password) => {
     dispatch(loginRequest());
 
     try {
-      // Make the API call to your backend to authenticate the user
       const response = await axios.post(
-        `/api/users/login/`,
+        `${apiBaseUrl}/api/users/login/`,
         { username: email, password: password }
       );
 
@@ -70,7 +70,7 @@ export const register = (firstName, lastName, email, password) => {
 
     try {
       const response = await axios.post(
-        `/api/users/register/`,
+        `${apiBaseUrl}/api/users/register/`,
         { 'first_name': firstName, 'last_name': lastName, 'email': email, 'password': password }
       );
 

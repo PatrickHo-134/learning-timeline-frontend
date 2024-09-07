@@ -10,7 +10,7 @@ const LabelSelectPopover = ({
   currentLabelIds,
 }) => {
   const allLabels = useSelector((state) => state.labelList.labels);
-  const labelOptions = allLabels
+  const labelOptions = (allLabels ?? [])
     .filter((label) => !currentLabelIds.includes(label.id))
     .sort((a, b) => a.name.localeCompare(b.name));
 

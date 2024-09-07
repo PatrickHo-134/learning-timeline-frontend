@@ -33,7 +33,7 @@ const LabelList = () => {
         <CircularProgress />
       ) : error ? (
         <span>{error}</span>
-      ) : (
+      ) : Array.isArray(labels) && labels.length > 0 ? (
         labels.map((label) => (
           <MainLabel
             key={label.id}
@@ -41,6 +41,8 @@ const LabelList = () => {
             onRemoveLabel={handleRemoveLabel}
           />
         ))
+      ) : (
+        <div></div>
       )}
       <LabelForm />
     </Box>

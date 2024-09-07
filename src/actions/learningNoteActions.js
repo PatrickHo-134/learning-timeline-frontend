@@ -1,4 +1,5 @@
 import axios from "axios";
+import { apiBaseUrl } from "../appConfig";
 
 //// FETCH LEARNING NOTES
 // Action Types
@@ -25,7 +26,7 @@ export const fetchLearningNotes = (userInfo) => {
   return (dispatch) => {
     dispatch(fetchLearningNotesRequest());
     axios
-      .get(`/api/timeline/${userInfo.id}/`, {
+      .get(`${apiBaseUrl}/api/timeline/${userInfo.id}/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +73,7 @@ export const createLearningNote = (newLearningNote, userInfo) => {
   return (dispatch) => {
     dispatch(createLearningNoteRequest());
     axios
-      .post(`/api/learning_notes/create/${id}/`, newLearningNote, {
+      .post(`${apiBaseUrl}/api/learning_notes/create/${id}/`, newLearningNote, {
         headers: headers,
       })
       .then((response) => {
@@ -114,7 +115,7 @@ export const archiveLearningNote = (noteId, userInfo) => {
     dispatch(archiveLearningNoteRequest());
 
     axios
-      .post(`/api/learning_notes/${noteId}/archive/`, null, {
+      .post(`${apiBaseUrl}/api/learning_notes/${noteId}/archive/`, null, {
         headers: headers,
       })
       .then((response) => {
@@ -159,7 +160,7 @@ export const deleteLearningNote = (noteId, userInfo) => {
     dispatch(deleteLearningNoteRequest());
 
     axios
-      .delete(`/api/learning_notes/${noteId}/delete/`, {
+      .delete(`${apiBaseUrl}/api/learning_notes/${noteId}/delete/`, {
         headers: headers,
       })
       .then((response) => {
@@ -205,7 +206,7 @@ export const updateLearningNote = (noteId, data, userInfo) => {
   return (dispatch) => {
     dispatch(updateLearningNoteRequest());
     axios
-      .patch(`/api/learning_notes/update/${noteId}/`, data, {
+      .patch(`${apiBaseUrl}/api/learning_notes/update/${noteId}/`, data, {
         headers: headers,
       })
       .then((response) => {
@@ -239,7 +240,7 @@ export const addLabelToLearningNote =
       };
 
       await axios.put(
-        `/api/learning-notes/${noteId}/add-label/`,
+        `${apiBaseUrl}/api/learning-notes/${noteId}/add-label/`,
         { labelId },
         config
       );
@@ -267,7 +268,7 @@ async (dispatch, getState) => {
     };
 
     await axios.put(
-      `/api/learning-notes/${noteId}/remove-label/`,
+      `${apiBaseUrl}/api/learning-notes/${noteId}/remove-label/`,
       { labelId },
       config
 
