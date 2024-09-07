@@ -2,7 +2,7 @@
   "name": "learning-timeline",
   "version": "0.1.0",
   "private": true,
-  "proxy":"http://localhost:8000/",
+  "proxy":"https://learning-timeline-api-90dc4a0a1cb3.herokuapp.com",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
