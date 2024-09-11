@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ReactMarkdown from "react-markdown";
 import {
   Box,
   Card,
@@ -87,6 +88,7 @@ const LearningNoteCard = ({ learningNote }) => {
   };
 
   const isPopoverOpen = Boolean(popoverAnchorEl);
+  const markdownTitle = `${title}`;
 
   return (
     <Card variant="outlined" sx={{ marginBottom: "1rem" }}>
@@ -110,14 +112,33 @@ const LearningNoteCard = ({ learningNote }) => {
           }
           title={
             <div>
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: "bold" }}
-                color="text.primary"
-                gutterBottom
-              >
-                {title}
-              </Typography>
+              <ReactMarkdown
+                children={markdownTitle}
+                components={{
+                  code: ({ node, ...props }) => (
+                    <span
+                      style={{
+                        fontFamily: "monospace",
+                        backgroundColor: "#f5f5f5",
+                        padding: "0 4px",
+                      }}
+                      {...props}
+                    />
+                  ),
+                  img: ({ node, ...props }) => (
+                    <img
+                      {...props}
+                      alt="icon"
+                      style={{
+                        display: "inline-block",
+                        verticalAlign: "middle",
+                        width: "16px",
+                        height: "16px",
+                      }}
+                    />
+                  ),
+                }}
+              />
             </div>
           }
           sx={{ padding: "0" }}
