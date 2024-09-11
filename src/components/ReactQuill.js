@@ -17,32 +17,28 @@ export const AutoHeightQuill = ({ content }) => {
   );
 };
 
+const modules = {
+  toolbar: [
+    [{header:1}, {header:2}],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    [{ font: [] }, { size: ["small", false, "large", "huge"] }],
+    ["bold", "italic", "underline", "strike", "code"], // toggled buttons
+    [{ align: [] }, { list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }, { direction: "rtl" }],
+    ["blockquote", "code-block"],
+    [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    ["link", "image", "video"],
+    ["clean"], // remove formatting button
+  ],
+};
+
 export const NoteContent = ({ content, setContent }) => {
   return (
     <ReactQuill
       className="edit-learning-note-content"
       value={content}
       onChange={setContent}
-      modules={{
-        toolbar: [
-          ["bold", "italic", "underline", "strike"], // toggled buttons
-          ["blockquote", "code-block"],
-          [{ header: 1 }, { header: 2 }], // custom button values
-          [{ list: "ordered" }, { list: "bullet" }],
-          [{ script: "sub" }, { script: "super" }], // superscript/subscript
-          [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-          [{ direction: "rtl" }], // text direction
-
-          [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-          [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-          [{ font: [] }],
-          [{ align: [] }],
-          ["link", "image", "video"],
-          ["clean"], // remove formatting button
-        ],
-      }}
+      modules={modules}
     />
   );
 };
