@@ -1,5 +1,6 @@
 import axios from "axios";
 import { apiBaseUrl } from "../appConfig";
+import { toast } from "react-toastify";
 
 export const LABELS_FETCH_REQUEST = "LABELS_FETCH_REQUEST";
 export const LABELS_FETCH_SUCCESS = "LABELS_FETCH_SUCCESS";
@@ -25,13 +26,13 @@ export const fetchLabels = (userInfo) => async (dispatch) => {
     });
 
     dispatch({ type: LABELS_FETCH_SUCCESS, payload: data });
-  } catch (error) {
+  } catch (response) {
     dispatch({
       type: LABELS_FETCH_FAIL,
       payload:
-        error.response && error.response.data.detail
-          ? error.response.data.detail
-          : error.message,
+      response.response && response.response.data.detail
+          ? response.response.data.detail
+          : response.message,
     });
   }
 };
@@ -94,5 +95,6 @@ export const deleteLabel = (labelId) => async (dispatch, getState) => {
       type: LABEL_DELETE_FAILURE,
       payload: error.response && error.response.data.detail ? error.response.data.detail : error.message,
     });
+    toast.error("Failed to delete label");
   }
 };
