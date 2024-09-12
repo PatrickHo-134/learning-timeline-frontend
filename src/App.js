@@ -7,6 +7,8 @@ import LearningNoteList from "./components/LearningNoteList";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import NavBar from "./components/NavBar";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
@@ -20,6 +22,7 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
           </Routes>
+          <ToastContainer />
         </div>
       </Router>
     </Provider>

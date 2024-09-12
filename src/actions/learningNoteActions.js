@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import { apiBaseUrl } from "../appConfig";
 
 //// FETCH LEARNING NOTES
@@ -37,8 +38,12 @@ export const fetchLearningNotes = (userInfo) => {
         const learningNotes = response.data;
         dispatch(fetchLearningNotesSuccess(learningNotes));
       })
-      .catch((error) => {
-        dispatch(fetchLearningNotesFailure(error.message));
+      .catch((response) => {
+        const errorMessage =
+          response?.response?.data?.error ||
+          "Error occurred when loading learning notes";
+        dispatch(fetchLearningNotesFailure(errorMessage));
+        toast.error(errorMessage);
       });
   };
 };
@@ -79,9 +84,12 @@ export const createLearningNote = (newLearningNote, userInfo) => {
       .then((response) => {
         const createdLearningNote = response.data;
         dispatch(createLearningNoteSuccess(createdLearningNote));
+        toast.success("Note added successfully");
       })
-      .catch((error) => {
-        dispatch(createLearningNoteFailure(error.message));
+      .catch((response) => {
+        const errorMessage = response?.response?.data?.error || "Failed to create new note. Please try again."
+        dispatch(createLearningNoteFailure(errorMessage));
+        toast.error(errorMessage);
       });
   };
 };
@@ -120,13 +128,14 @@ export const archiveLearningNote = (noteId, userInfo) => {
       })
       .then((response) => {
         dispatch(archiveLearningNoteSuccess(noteId));
+        toast.error("Note archived successfully");
       })
-      .catch((error) => {
-        dispatch(
-          archiveLearningNoteFailure(
-            "Failed to archive learning note. Please try again."
-          )
-        );
+      .catch((response) => {
+        const errorMessage =
+          response?.response?.data?.error ||
+          "Failed to archive learning note. Please try again.";
+        dispatch(archiveLearningNoteFailure(errorMessage));
+        toast.error(errorMessage);
       });
   };
 };
@@ -165,13 +174,14 @@ export const deleteLearningNote = (noteId, userInfo) => {
       })
       .then((response) => {
         dispatch(deleteLearningNoteSuccess(noteId));
+        toast.error("Note deleted successfully");
       })
-      .catch((error) => {
-        dispatch(
-          deleteLearningNoteFailure(
-            "Failed to delete learning note. Please try again."
-          )
-        );
+      .catch((response) => {
+        const errorMessage =
+          response?.response?.data?.error ||
+          "Failed to delete learning note. Please try again.";
+        dispatch(deleteLearningNoteFailure(errorMessage));
+        toast.error(errorMessage);
       });
   };
 };
@@ -212,13 +222,13 @@ export const updateLearningNote = (noteId, data, userInfo) => {
       .then((response) => {
         const updatedLearningNote = response.data;
         dispatch(updateLearningNoteSuccess(updatedLearningNote));
+        toast.success("Note updated successfully!");
       })
-      .catch((error) => {
-        dispatch(
-          updateLearningNoteFailure(
-            "Failed to update learning note. Please try again."
-          )
-        );
+      .catch((response) => {
+        const errorMessage =
+          response?.response?.data?.error || "Failed to update note";
+        dispatch(updateLearningNoteFailure(errorMessage));
+        toast.error(errorMessage);
       });
   };
 };
@@ -249,36 +259,41 @@ export const addLabelToLearningNote =
         type: ADD_LABEL_TO_NOTE_SUCCESS,
         payload: { labelId: labelId, noteId: noteId },
       });
-    } catch (error) {
-      // handle error appropriately
+    } catch (response) {
+      const errorMessage =
+        response?.response?.data?.error || "Failed to add label to note";
+      toast.error(errorMessage);
     }
   };
 
 export const REMOVE_LABEL_FROM_NOTE_SUCCESS = "REMOVE_LABEL_FROM_NOTE_SUCCESS";
-export const removeLabelFromLearningNote = (noteId, labelId) =>
-async (dispatch, getState) => {
-  const { userLogin: { userInfo },} = getState();
+export const removeLabelFromLearningNote =
+  (noteId, labelId) => async (dispatch, getState) => {
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-  try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    await axios.put(
-      `${apiBaseUrl}/api/learning-notes/${noteId}/remove-label/`,
-      { labelId },
-      config
+      await axios.put(
+        `${apiBaseUrl}/api/learning-notes/${noteId}/remove-label/`,
+        { labelId },
+        config
+      );
 
-    );
-
-    dispatch({
-      type: REMOVE_LABEL_FROM_NOTE_SUCCESS,
-      payload: { labelId: labelId, noteId: noteId },
-    });
-  } catch (error) {
-    // TODO: handle error here
-  }
-}
+      dispatch({
+        type: REMOVE_LABEL_FROM_NOTE_SUCCESS,
+        payload: { labelId: labelId, noteId: noteId },
+      });
+    } catch (response) {
+      const errorMessage =
+        response?.response?.data?.error || "Failed to remove label from note";
+      toast.error(errorMessage);
+    }
+  };
