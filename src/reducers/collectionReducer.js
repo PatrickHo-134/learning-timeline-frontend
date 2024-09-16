@@ -4,6 +4,8 @@ import {
   COLLECTIONS_FETCH_FAIL,
   COLLECTION_CREATE_SUCCESS,
   COLLECTION_CREATE_FAILURE,
+  COLLECTION_ARCHIVE_SUCCESS,
+  COLLECTION_ARCHIVE_FAILURE,
 } from "../actions/collectionActions";
 
 const defaultCategory = { id: 0, name: "All notes" };
@@ -39,10 +41,18 @@ export const collectionListReducer = (state = initialState, action) => {
         loading: false,
       };
     case COLLECTION_CREATE_FAILURE:
+    case COLLECTION_ARCHIVE_FAILURE:
       return {
         ...state,
         loading: false,
         error: action.payload,
+      };
+    case COLLECTION_ARCHIVE_SUCCESS:
+      return {
+        ...state,
+        collections: state.collections.filter(
+          (collection) => collection.id !== action.payload.collectionId
+        ),
       };
     default:
       return state;

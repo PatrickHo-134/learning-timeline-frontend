@@ -10,8 +10,8 @@ export const COLLECTION_CREATE_REQUEST = "COLLECTION_CREATE_REQUEST";
 export const COLLECTION_CREATE_SUCCESS = "COLLECTION_CREATE_SUCCESS";
 export const COLLECTION_CREATE_FAILURE = "COLLECTION_CREATE_FAILURE";
 
-export const COLLECTION_DELETE_SUSSCESS = "COLLECTION_DELETE_SUSSCESS";
-export const COLLECTION_DELETE_FAILURE = "COLLECTION_DELETE_FAILURE";
+export const COLLECTION_ARCHIVE_SUCCESS = "COLLECTION_ARCHIVE_SUCCESS";
+export const COLLECTION_ARCHIVE_FAILURE = "COLLECTION_ARCHIVE_FAILURE";
 
 export const fetchCollections = (userInfo) => async (dispatch) => {
   try {
@@ -71,5 +71,41 @@ export const createCollection =
             : error.message,
       });
       toast.error("Failed to create new category");
+    }
+  };
+
+export const archiveCollection =
+  (collectionId) => async (dispatch, getState) => {
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      await axios.post(
+        `${apiBaseUrl}/api/collection/${collectionId}/archive/`,
+        {},
+        config
+      );
+
+      dispatch({
+        type: COLLECTION_ARCHIVE_SUCCESS,
+        payload: { collectionId: collectionId },
+      });
+    } catch (error) {
+      dispatch({
+        type: COLLECTION_ARCHIVE_FAILURE,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+      toast.error("Failed to archive category");
     }
   };
