@@ -8,7 +8,6 @@ import {
 } from "../actions/learningNoteActions";
 import LearningNoteCard from "./LearningNoteCard";
 import AddLearningNoteModal from "./AddLearningNoteModal";
-import LabelList from "./LabelList";
 import { fetchLabels } from "../actions/labelActions";
 
 const LearningNoteList = () => {
@@ -35,8 +34,6 @@ const LearningNoteList = () => {
 
   return (
     <Container maxWidth="md">
-      <h1>Timeline</h1>
-      <LabelList />
       <AddLearningNoteModal onAddNote={handleAddNote} />
       {Array.isArray(learningNotes) && learningNotes.length === 0 ? (
         <p>Your Timeline is empty. Let's create your first note.</p>
