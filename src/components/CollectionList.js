@@ -3,6 +3,7 @@ import { List, ListItem, ListItemText } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCollections } from "../actions/collectionActions";
 import { Container } from "react-bootstrap";
+import AddCollectionForm from "./AddCollectionForm";
 
 const CollectionList = () => {
   const dispatch = useDispatch();
@@ -27,15 +28,17 @@ const CollectionList = () => {
     <Container>
       <h3>Categories</h3>
       {Array.isArray(collections) && collections.length > 0 ? (
-      <List>
-        {collections.map((collection) => (
-          <ListItem button key={collection.id}>
-            <ListItemText primary={collection.name} />
-          </ListItem>
-        ))}
-      </List>
-      ) : (<div></div>)
-}
+        <List>
+          {collections.map((collection) => (
+            <ListItem button key={collection.id}>
+              <ListItemText primary={collection.name} />
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <div></div>
+      )}
+      <AddCollectionForm />
     </Container>
   );
 };

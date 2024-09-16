@@ -41,10 +41,6 @@ export const fetchCollections = (userInfo) => async (dispatch) => {
   }
 };
 
-const createCollectionRequest = () => ({
-  type: COLLECTION_CREATE_REQUEST,
-});
-
 export const createCollection =
   (collectionData, userInfo) => async (dispatch) => {
     try {
@@ -54,8 +50,6 @@ export const createCollection =
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-
-      dispatch(createCollectionRequest());
 
       const { data } = await axios.post(
         `${apiBaseUrl}/api/collection/create/`,
