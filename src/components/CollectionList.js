@@ -44,9 +44,9 @@ const CollectionList = () => {
       <h3>Categories</h3>
       {Array.isArray(collections) && collections.length > 0 ? (
         <List>
-          {collections.map((collection) => (
+          {collections.map((collection, index) => (
             <ListItem
-              key={collection.id}
+              key={index}
               onMouseEnter={() => setHoveredCollectionId(collection.id)}
               onMouseLeave={() => setHoveredCollectionId(null)}
               sx={{

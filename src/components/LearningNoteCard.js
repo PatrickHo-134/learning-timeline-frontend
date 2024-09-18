@@ -27,16 +27,22 @@ import EditLearningNoteModal from "./EditLearningNoteModal";
 import LabelSelectPopover from "./LabelSelectPopover";
 import LearningNoteLabel from "./LearningNoteLabel";
 import { AutoHeightQuill } from "./ReactQuill";
+import AddToCollectionModal from "./AddToCollectionModal";
 
 const LearningNoteCard = ({ learningNote }) => {
-  const { id, created_at, title, content, updated_at, labels } = learningNote;
+  const { id, created_at, title, content, updated_at, labels, collection } =
+    learningNote;
   const [anchorEl, setAnchorEl] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [isContentVisible, setIsContentVisible] = useState(false); // Set to false to collapse by default
+  const [showAddToCollectionModal, setShowAddToCollectionModal] =
+    useState(false);
+  const [isContentVisible, setIsContentVisible] = useState(false);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [labelPopoverAnchorEl, setLabelPopoverAnchorEl] = useState(null);
+
   const userInfo = useSelector((state) => state.userLogin.userInfo);
   const labelList = useSelector((state) => state.labelList.labels);
+
   const dispatch = useDispatch();
 
   const handleMenuOpen = (event) => {
@@ -85,6 +91,11 @@ const LearningNoteCard = ({ learningNote }) => {
 
   const handleRemoveLabel = (labelId) => {
     dispatch(removeLabelFromLearningNote(id, labelId));
+  };
+
+  const handleAddToCollection = () => {
+    setShowAddToCollectionModal(true);
+    handleMenuClose();
   };
 
   const isPopoverOpen = Boolean(popoverAnchorEl);
@@ -176,6 +187,7 @@ const LearningNoteCard = ({ learningNote }) => {
         onClose={handleMenuClose}
       >
         <MenuItem onClick={handleEdit}>Edit</MenuItem>
+        <MenuItem onClick={handleAddToCollection}>Add to Category</MenuItem>
         <MenuItem onClick={handleArchive}>Archive</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
@@ -221,6 +233,14 @@ const LearningNoteCard = ({ learningNote }) => {
         onLabelSelect={handleAddLabel}
         currentLabelIds={labels}
       />
+
+      {showAddToCollectionModal && (
+        <AddToCollectionModal
+          learningNoteId={learningNote.id}
+          currentCollectionId={collection}
+          onClose={() => setShowAddToCollectionModal(false)}
+        />
+      )}
     </Card>
   );
 };
