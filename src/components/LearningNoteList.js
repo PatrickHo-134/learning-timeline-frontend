@@ -20,7 +20,7 @@ const LearningNoteList = () => {
 
   useEffect(() => {
     if (userInfo) {
-      dispatch(fetchLearningNotes(userInfo));
+      dispatch(fetchLearningNotes({collectionId:0, labels:[], userInfo:userInfo}));
       dispatch(fetchLabels(userInfo));
     } else {
       navigate("/");

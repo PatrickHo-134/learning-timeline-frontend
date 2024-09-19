@@ -136,7 +136,7 @@ export const moveNoteToCollection =
         config
       );
 
-      dispatch(fetchLearningNotes(userInfo));
+      dispatch(fetchLearningNotes({collectionId: collectionId, labels:[], userInfo:userInfo}));
       toast.success("Add note to category successfully");
     } catch (error) {
       dispatch({
