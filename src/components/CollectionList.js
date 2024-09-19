@@ -80,7 +80,7 @@ const CollectionList = () => {
                 backgroundColor:
                   selectedCollectionId === collection.id
                     ? "#b3cde0"
-                    : "#e0e0e0", // Highlight selected collection
+                    : "#ffffff",
               }}
             >
               <ListItemText primary={collection.name} />
