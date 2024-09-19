@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['userLogin', 'learningNotes'], // Specify which reducers you want to persist
+  whitelist: ['userLogin', 'learningNotes', 'labelList', 'collectionList'], // Specify which reducers you want to persist
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

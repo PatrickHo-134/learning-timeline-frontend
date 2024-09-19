@@ -23,17 +23,23 @@ export const fetchLearningNotesFailure = (error) => ({
   payload: error,
 });
 
-export const fetchLearningNotes = (userInfo) => {
+export const fetchLearningNotes = ({ collectionId, labels, userInfo }) => {
+  const config = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${userInfo.token}`,
+    },
+    params: {
+      collection_id: collectionId,
+      labels: labels,
+    },
+  };
+
   return (dispatch) => {
     dispatch(fetchLearningNotesRequest());
     axios
-      .get(`${apiBaseUrl}/api/timeline/${userInfo.id}/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      })
+      .get(`${apiBaseUrl}/api/timeline/${userInfo.id}/`, config)
       .then((response) => {
         const learningNotes = response.data;
         dispatch(fetchLearningNotesSuccess(learningNotes));
@@ -87,7 +93,9 @@ export const createLearningNote = (newLearningNote, userInfo) => {
         toast.success("Note added successfully");
       })
       .catch((response) => {
-        const errorMessage = response?.response?.data?.error || "Failed to create new note. Please try again."
+        const errorMessage =
+          response?.response?.data?.error ||
+          "Failed to create new note. Please try again.";
         dispatch(createLearningNoteFailure(errorMessage));
         toast.error(errorMessage);
       });
