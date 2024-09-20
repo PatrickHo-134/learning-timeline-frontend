@@ -11,11 +11,19 @@ import {
   MenuItem,
   Popover,
   Typography,
+  Chip,
+  CardActions,
+  Collapse,
+  Grid,
 } from "@mui/material";
-import { Add as AddIcon, MoreVert as MoreVertIcon } from "@mui/icons-material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import InfoIcon from "@mui/icons-material/Info";
+import {
+  Add as AddIcon,
+  Info as InfoIcon,
+  MoreVert as MoreVertIcon,
+  LocalOffer as TagIcon,
+  ExpandMore as ExpandMoreIcon,
+  ExpandLess as ExpandLessIcon,
+} from "@mui/icons-material";
 import moment from "moment";
 import {
   archiveLearningNote,
@@ -29,6 +37,93 @@ import LearningNoteLabel from "./LearningNoteLabel";
 import { AutoHeightQuill } from "./ReactQuill";
 import AddToCollectionModal from "./AddToCollectionModal";
 
+const CategoryTag = ({ tagName }) => {
+  return <Chip label={tagName} icon={<TagIcon />} size="medium" />;
+};
+
+const CardTitle = ({ title, onClickHandler }) => {
+  return (
+    <div onClick={onClickHandler}>
+      <ReactMarkdown
+        children={title}
+        components={{
+          code: ({ node, ...props }) => (
+            <span
+              style={{
+                fontFamily: "monospace",
+                backgroundColor: "#f5f5f5",
+                padding: "0 4px",
+              }}
+              {...props}
+            />
+          ),
+          img: ({ node, ...props }) => (
+            <img
+              {...props}
+              alt="icon"
+              style={{
+                display: "inline-block",
+                verticalAlign: "middle",
+                width: "16px",
+                height: "16px",
+              }}
+            />
+          ),
+        }}
+      />
+    </div>
+  );
+};
+
+const CardLabels = ({
+  cardLabels,
+  allLabels,
+  removeLabelHandler,
+  addLabelhandler,
+}) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+        flexWrap: "wrap",
+      }}
+    >
+      {Array.isArray(cardLabels) && cardLabels.length > 0 ? (
+        cardLabels.map((labelId) => (
+          <LearningNoteLabel
+            key={labelId}
+            labelId={labelId}
+            labelList={allLabels}
+            onRemoveLabel={removeLabelHandler}
+          />
+        ))
+      ) : (
+        <div></div>
+      )}
+      <IconButton onClick={addLabelhandler}>
+        <AddIcon />
+      </IconButton>
+    </Box>
+  );
+};
+
+const ShowContentButton = ({ showContent, onClickShowContent }) => {
+  return (
+    <IconButton
+      expand={showContent}
+      onClick={onClickShowContent}
+      aria-expanded={showContent}
+      aria-label="show more"
+      color="primary"
+      sx={{ marginTop: "1.5rem" }}
+    >
+      {showContent ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+    </IconButton>
+  );
+};
+
 const LearningNoteCard = ({ learningNote }) => {
   const { id, created_at, title, content, updated_at, labels, collection } =
     learningNote;
@@ -39,9 +134,16 @@ const LearningNoteCard = ({ learningNote }) => {
   const [isContentVisible, setIsContentVisible] = useState(false);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [labelPopoverAnchorEl, setLabelPopoverAnchorEl] = useState(null);
+  const isPopoverOpen = Boolean(popoverAnchorEl);
 
   const userInfo = useSelector((state) => state.userLogin.userInfo);
   const labelList = useSelector((state) => state.labelList.labels);
+  const collectionList = useSelector(
+    (state) => state.collectionList.collections
+  );
+  const noteCollectionInfo = collectionList.filter(
+    (collection) => collection.id === learningNote.collection
+  )[0];
 
   const dispatch = useDispatch();
 
@@ -98,87 +200,67 @@ const LearningNoteCard = ({ learningNote }) => {
     handleMenuClose();
   };
 
-  const isPopoverOpen = Boolean(popoverAnchorEl);
-  const markdownTitle = `${title}`;
-
   return (
-    <Card variant="outlined" sx={{ marginBottom: "1rem" }}>
+    <Card sx={{ marginBottom: "1rem" }}>
       <CardContent>
-        <CardHeader
-          action={
-            <div>
-              <IconButton aria-label="information" onClick={handlePopoverClick}>
-                <InfoIcon />
-              </IconButton>
+        <CardActions>
+          <Grid container>
+            <Grid
+              item
+              sm={12}
+              md={4}
+              lg={4}
+              container
+              justifyContent="flex-start"
+              alignItems="center"
+            >
               <IconButton aria-label="settings" onClick={handleMenuOpen}>
                 <MoreVertIcon />
               </IconButton>
-              <IconButton
-                onClick={toggleContentVisibility}
-                aria-label="toggle content visibility"
-              >
-                {isContentVisible ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              <IconButton aria-label="information" onClick={handlePopoverClick}>
+                <InfoIcon />
               </IconButton>
-            </div>
-          }
+              <CategoryTag tagName={noteCollectionInfo.name} />
+            </Grid>
+
+            <Grid
+              item
+              sm={12}
+              md={8}
+              lg={8}
+              container
+              justifyContent="flex-end"
+              alignItems="center"
+            >
+              <CardLabels
+                cardLabels={labels}
+                allLabels={labelList}
+                removeLabelHandler={handleRemoveLabel}
+                addLabelhandler={handleLabelPopoverOpen}
+              />
+            </Grid>
+          </Grid>
+        </CardActions>
+
+        <CardHeader
           title={
-            <div>
-              <ReactMarkdown
-                children={markdownTitle}
-                components={{
-                  code: ({ node, ...props }) => (
-                    <span
-                      style={{
-                        fontFamily: "monospace",
-                        backgroundColor: "#f5f5f5",
-                        padding: "0 4px",
-                      }}
-                      {...props}
-                    />
-                  ),
-                  img: ({ node, ...props }) => (
-                    <img
-                      {...props}
-                      alt="icon"
-                      style={{
-                        display: "inline-block",
-                        verticalAlign: "middle",
-                        width: "16px",
-                        height: "16px",
-                      }}
-                    />
-                  ),
-                }}
-              />
-            </div>
+            <CardTitle
+              title={`${title}`}
+              onClickHandler={toggleContentVisibility}
+            />
           }
-          sx={{ padding: "0" }}
+          action={
+            <ShowContentButton
+              showContent={isContentVisible}
+              onClickShowContent={toggleContentVisibility}
+            />
+          }
+          sx={{ paddingY: "0", paddingX: "0.5rem", marginY: "-0.5rem" }}
         />
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            flexWrap: "wrap",
-          }}
-        >
-          {Array.isArray(labels) && labels.length > 0 ? (
-            labels.map((labelId) => (
-              <LearningNoteLabel
-                key={labelId}
-                labelId={labelId}
-                labelList={labelList}
-                onRemoveLabel={handleRemoveLabel}
-              />
-            ))
-          ) : (
-            <div></div>
-          )}
-          <IconButton onClick={handleLabelPopoverOpen}>
-            <AddIcon />
-          </IconButton>
-        </Box>
-        {isContentVisible && <AutoHeightQuill content={content} />}
+
+        <Collapse in={isContentVisible} timeout="auto">
+          <AutoHeightQuill content={content} />
+        </Collapse>
       </CardContent>
 
       <Menu

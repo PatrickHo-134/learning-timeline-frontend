@@ -10,7 +10,7 @@ function MainLabel({ labelInfo, onRemoveLabel }) {
     <Chip
       key={id}
       label={name}
-      style={{ backgroundColor: color, minWidth: "7rem" }}
+      style={{ backgroundColor: color, minWidth: "6rem" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       deleteIcon={hovered ? <CloseIcon /> : <div></div>}

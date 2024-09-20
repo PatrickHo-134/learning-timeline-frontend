@@ -19,10 +19,10 @@ function LearningNoteLabel({ labelId, labelList = [], onRemoveLabel }) {
       <Chip
         key={labelInfo.id}
         label={labelInfo.name}
+        size="small"
         style={{
           backgroundColor: labelInfo.color,
           cursor: "pointer",
-          minWidth: "7rem",
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
