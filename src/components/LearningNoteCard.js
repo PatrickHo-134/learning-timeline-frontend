@@ -141,10 +141,7 @@ const LearningNoteCard = ({ learningNote }) => {
   const collectionList = useSelector(
     (state) => state.collectionList.collections
   );
-  const noteCollectionInfo = collectionList.filter(
-    (collection) => collection.id === learningNote.collection
-  )[0];
-
+  const noteCollectionInfo = collectionList.filter((collection) => collection.id === learningNote.collection)[0];
   const dispatch = useDispatch();
 
   const handleMenuOpen = (event) => {
@@ -220,7 +217,7 @@ const LearningNoteCard = ({ learningNote }) => {
               <IconButton aria-label="information" onClick={handlePopoverClick}>
                 <InfoIcon />
               </IconButton>
-              <CategoryTag tagName={noteCollectionInfo.name} />
+              {noteCollectionInfo ? <CategoryTag tagName={noteCollectionInfo.name} /> : <div></div>}
             </Grid>
 
             <Grid
