@@ -15,6 +15,7 @@ import {
 import { Container } from "react-bootstrap";
 import AddCollectionForm from "./AddCollectionForm";
 import { fetchLearningNotes } from "../actions/learningNoteActions";
+import { setCategoryFilter } from "../actions/pageFilterActions";
 
 const CollectionList = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const CollectionList = () => {
         userInfo: userInfo,
       })
     );
+    dispatch(setCategoryFilter(collectionId));
   };
 
   useEffect(() => {
