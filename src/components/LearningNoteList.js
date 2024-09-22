@@ -17,10 +17,11 @@ const LearningNoteList = () => {
     (state) => state.learningNotes.learningNotes
   );
   const userInfo = useSelector((state) => state.userLogin.userInfo);
+  const { selectedCategory, selectedLabels } = useSelector((state) => state.pageFilter);
 
   useEffect(() => {
     if (userInfo) {
-      dispatch(fetchLearningNotes({collectionId:0, labels:[], userInfo:userInfo}));
+      dispatch(fetchLearningNotes({collectionId:selectedCategory, labels:selectedLabels, userInfo:userInfo}));
       dispatch(fetchLabels(userInfo));
     } else {
       navigate("/");

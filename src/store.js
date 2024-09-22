@@ -14,7 +14,10 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const initialState = {
   learningNotes: { learningNotes: []},
-  userLogin: { userInfo: JSON.parse(localStorage.getItem('userInfo')) || null }
+  userLogin: { userInfo: JSON.parse(localStorage.getItem('userInfo')) || null },
+  labelList: { labels: []},
+  collectionList: { collections: []},
+  pageFilter: { selectedCategory: 0, selectedLabel: []},
 }
 
 const store = configureStore({
