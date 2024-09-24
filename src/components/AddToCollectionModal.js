@@ -12,11 +12,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { moveNoteToCollection } from "../actions/collectionActions";
+import { moveNoteToCollection } from "../actions/learningNoteActions";
 
 const AddToCollectionModal = ({
-  learningNoteId,
-  currentCollectionId,
+  noteInfo,
   onClose,
 }) => {
   const dispatch = useDispatch();
@@ -24,6 +23,7 @@ const AddToCollectionModal = ({
     (state) => state.collectionList
   );
   const [selectedCollection, setSelectedCollection] = useState(null);
+  const { collection : currentCollectionId } = noteInfo;
 
   useEffect(() => {
     if (currentCollectionId) {
@@ -36,7 +36,7 @@ const AddToCollectionModal = ({
 
   const handleAddToCollection = () => {
     if (selectedCollection) {
-      dispatch(moveNoteToCollection(learningNoteId, selectedCollection.id));
+      dispatch(moveNoteToCollection(noteInfo, selectedCollection.id));
       onClose();
     }
   };

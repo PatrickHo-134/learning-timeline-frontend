@@ -315,8 +315,7 @@ const LearningNoteCard = ({ learningNote }) => {
 
       {showAddToCollectionModal && (
         <AddToCollectionModal
-          learningNoteId={learningNote.id}
-          currentCollectionId={collection}
+          noteInfo={learningNote}
           onClose={() => setShowAddToCollectionModal(false)}
         />
       )}
