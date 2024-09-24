@@ -16,6 +16,9 @@ import {
   UPDATE_LEARNING_NOTE_FAILURE,
   ADD_LABEL_TO_NOTE_SUCCESS,
   REMOVE_LABEL_FROM_NOTE_SUCCESS,
+  MOVE_TO_COLLECTION_SUCCESS,
+  MOVE_TO_COLLECTION_FAILURE,
+  REMOVE_NOTE_FROM_LIST,
 } from "../actions/learningNoteActions";
 import { LOGOUT, REGISTER_SUCCESS } from "../actions/userActions";
 
@@ -83,6 +86,7 @@ const learningNoteReducer = (state = initialState, action) => {
     case ARCHIVE_LEARNING_NOTE_FAILURE:
     case DELETE_LEARNING_NOTE_FAILURE:
     case UPDATE_LEARNING_NOTE_FAILURE:
+    case MOVE_TO_COLLECTION_FAILURE:
       return {
         ...state,
         loading: false,
@@ -120,6 +124,23 @@ const learningNoteReducer = (state = initialState, action) => {
         ),
       };
 
+    case REMOVE_NOTE_FROM_LIST:
+      return {
+        ...state,
+        learningNotes: state.learningNotes.filter(
+          (note) => note.id !== action.payload
+        ),
+      };
+
+    case MOVE_TO_COLLECTION_SUCCESS:
+      return {
+        ...state,
+        learningNotes: state.learningNotes.map((note) =>
+          note.id === action.payload.noteInfo.id
+            ? action.payload.noteInfo
+            : note
+        ),
+      };
     default:
       return state;
   }

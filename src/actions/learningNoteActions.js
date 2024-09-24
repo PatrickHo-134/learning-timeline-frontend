@@ -241,6 +241,9 @@ export const updateLearningNote = (noteId, data, userInfo) => {
   };
 };
 
+
+//// ADD LABEL TO LEARNING NOTE
+
 export const ADD_LABEL_TO_NOTE_SUCCESS = "ADD_LABEL_TO_NOTE_SUCCESS";
 
 export const addLabelToLearningNote =
@@ -274,6 +277,9 @@ export const addLabelToLearningNote =
     }
   };
 
+
+//// REMOVE LABEL TO LEARNING NOTE
+
 export const REMOVE_LABEL_FROM_NOTE_SUCCESS = "REMOVE_LABEL_FROM_NOTE_SUCCESS";
 export const removeLabelFromLearningNote =
   (noteId, labelId) => async (dispatch, getState) => {
@@ -303,5 +309,61 @@ export const removeLabelFromLearningNote =
       const errorMessage =
         response?.response?.data?.error || "Failed to remove label from note";
       toast.error(errorMessage);
+    }
+  };
+
+
+//// ADD LEARNING NOTE TO CATEGORY
+
+export const MOVE_TO_COLLECTION_SUCCESS = "MOVE_TO_COLLECTION_SUCCESS";
+export const MOVE_TO_COLLECTION_FAILURE = "MOVE_TO_COLLECTION_FAILURE";
+export const REMOVE_NOTE_FROM_LIST = "REMOVE_NOTE_FROM_LIST";
+
+export const moveNoteToCollection =
+  (noteInfo, collectionId) => async (dispatch, getState) => {
+    try {
+      const {
+        userLogin: { userInfo },
+      } = getState();
+      const {
+        pageFilter: { selectedCategory },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        `${apiBaseUrl}/api/learning_notes/${noteInfo.id}/add_to_collection/`,
+        { collectionId: collectionId },
+        config
+      );
+
+      if (selectedCategory !== 0 && selectedCategory !== collectionId) {
+        dispatch({
+          type: REMOVE_NOTE_FROM_LIST,
+          payload: noteInfo.id,
+        });
+      } else {
+        const updatedNote = {...noteInfo, collection: collectionId};
+        dispatch({
+          type: MOVE_TO_COLLECTION_SUCCESS,
+          payload: { noteInfo: updatedNote, collectionId: collectionId },
+        });
+      }
+
+      toast.success("Add note to category successfully");
+    } catch (error) {
+      dispatch({
+        type: MOVE_TO_COLLECTION_FAILURE,
+        payload:
+          error.response && error.response.data.detail
+            ? error.response.data.detail
+            : error.message,
+      });
+      toast.error("Failed to add note to category");
     }
   };
