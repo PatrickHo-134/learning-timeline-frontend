@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import {
   fetchLearningNotes,
   createLearningNote,
@@ -16,8 +16,12 @@ const LearningNoteList = () => {
   const learningNotes = useSelector(
     (state) => state.learningNotes.learningNotes
   );
+  const allCollections = useSelector(
+    (state) => state.collectionList.collections
+  );
   const userInfo = useSelector((state) => state.userLogin.userInfo);
   const { selectedCategory, selectedLabels } = useSelector((state) => state.pageFilter);
+  const selectedCollectionName = allCollections.filter((coll) => coll.id === selectedCategory)[0].name;
 
   useEffect(() => {
     if (userInfo) {
@@ -35,6 +39,7 @@ const LearningNoteList = () => {
 
   return (
     <Container maxWidth="md">
+      <h2>{selectedCollectionName}</h2>
       <AddLearningNoteModal onAddNote={handleAddNote} />
       {Array.isArray(learningNotes) && learningNotes.length === 0 ? (
         <p>Your Timeline is empty. Let's create your first note.</p>
