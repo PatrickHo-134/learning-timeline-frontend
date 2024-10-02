@@ -1,37 +1,54 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Container, Typography } from "@mui/material";
+import { Container } from "@mui/material";
 import {
   fetchLearningNotes,
   createLearningNote,
 } from "../actions/learningNoteActions";
 import LearningNoteCard from "./LearningNoteCard";
 import AddLearningNoteModal from "./AddLearningNoteModal";
-import { fetchLabels } from "../actions/labelActions";
 
 const LearningNoteList = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const learningNotes = useSelector(
-    (state) => state.learningNotes.learningNotes
-  );
+
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const observer = useRef();
+
+  const {
+    notes: learningNoteList,
+    loading,
+    nextPage,
+  } = useSelector((state) => state.learningNotes);
   const allCollections = useSelector(
     (state) => state.collectionList.collections
   );
   const userInfo = useSelector((state) => state.userLogin.userInfo);
-  const { selectedCategory, selectedLabels } = useSelector((state) => state.pageFilter);
-  const selectedCollectionName = allCollections.filter((coll) => coll.id === selectedCategory)[0].name;
+  const { selectedCategory } = useSelector((state) => state.pageFilter);
+
+  const selectedCollectionName = allCollections.filter(
+    (coll) => coll.id === selectedCategory
+  )[0]?.name;
 
   useEffect(() => {
     if (userInfo) {
-      dispatch(fetchLearningNotes({collectionId:selectedCategory, labels:selectedLabels, userInfo:userInfo}));
-      dispatch(fetchLabels(userInfo));
-    } else {
-      navigate("/");
+      dispatch(fetchLearningNotes(selectedCategory, pageNumber));
     }
-    // eslint-disable-next-line
-  }, []);
+  }, [dispatch, userInfo, selectedCategory, pageNumber]);
+
+  const lastNoteRef = (node) => {
+    if (loading) return; // Don't observe while loading
+
+    if (observer.current) observer.current.disconnect(); // Disconnect previous observer
+
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && nextPage) {
+        setPageNumber((prevPage) => prevPage + 1); // Load next page when user reaches the bottom
+      }
+    });
+
+    if (node) observer.current.observe(node); // Observe the last note
+  };
 
   const handleAddNote = (newNote) => {
     dispatch(createLearningNote(newNote));
@@ -40,13 +57,20 @@ const LearningNoteList = () => {
   return (
     <Container maxWidth="md">
       <h2>{selectedCollectionName}</h2>
+
       <AddLearningNoteModal onAddNote={handleAddNote} />
-      {Array.isArray(learningNotes) && learningNotes.length === 0 ? (
+
+      {Array.isArray(learningNoteList) && learningNoteList.length === 0 ? (
         <p>Your Timeline is empty. Let's create your first note.</p>
       ) : (
-        Array.isArray(learningNotes) &&
-        learningNotes.map((note) => (
-          <LearningNoteCard key={note.id} learningNote={note} />
+        Array.isArray(learningNoteList) &&
+        learningNoteList.map((note, index) => (
+          <div
+            key={note.id}
+            ref={learningNoteList.length === index + 1 ? lastNoteRef : null}
+          >
+            <LearningNoteCard key={note.id} learningNote={note} />
+          </div>
         ))
       )}
     </Container>

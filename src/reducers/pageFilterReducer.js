@@ -3,7 +3,7 @@ import {
   SET_SELECTED_LABELS,
 } from "../actions/pageFilterActions";
 
-const initialState = { selectedCategory: 0, selectedLabel: [] };
+const initialState = { selectedCategory: 0, selectedLabels: [] };
 
 export const pageFilterReducer = (state = initialState, action) => {
   switch (action.type) {

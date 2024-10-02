@@ -34,13 +34,7 @@ const CollectionList = () => {
 
   const handleCollectionSelect = (collectionId) => {
     setSelectedCollectionId(collectionId);
-    dispatch(
-      fetchLearningNotes({
-        collectionId: collectionId,
-        labels: [],
-        userInfo: userInfo,
-      })
-    );
+    dispatch(fetchLearningNotes(collectionId, 1)); // when selecting a category, always fetch notes again from page 1
     dispatch(setCategoryFilter(collectionId));
   };
 
@@ -48,15 +42,11 @@ const CollectionList = () => {
     dispatch(fetchCollections(userInfo));
   }, [dispatch, userInfo]);
 
-  // Set "All notes" (id: 0) to be selected by default when page loads
   useEffect(() => {
     if (!loading && collections.length > 0) {
       setSelectedCollectionId(0);
-      dispatch(
-        fetchLearningNotes({ collection_id: 0, labels: [], userInfo: userInfo })
-      ); // FIXME: update labels list
     }
-  }, [loading, collections, userInfo, dispatch]);
+  }, [loading, collections]);
 
   if (loading) {
     return <p>Loading collections...</p>;

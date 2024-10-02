@@ -23,13 +23,15 @@ import {
 import { LOGOUT, REGISTER_SUCCESS } from "../actions/userActions";
 
 const initialState = {
-  learningNotes: [],
+  notes: [],
+  currentPage: 1,
   loading: false,
   error: null,
 };
 
 const learningNoteReducer = (state = initialState, action) => {
   let noteList;
+  let updatedList;
 
   switch (action.type) {
     case FETCH_LEARNING_NOTES_REQUEST:
@@ -44,40 +46,46 @@ const learningNoteReducer = (state = initialState, action) => {
       };
 
     case FETCH_LEARNING_NOTES_SUCCESS:
+      const { next_page, previous_page, count, current_page, total_pages } = action.payload;
+      updatedList = [ ...state.notes, ...action.payload.results];
       return {
         ...state,
-        learningNotes: action.payload,
+        notes: updatedList,
+        nextPage: next_page,
+        previousPage: previous_page,
+        totalCount: count,
+        currentPage: current_page,
+        totalPages: total_pages,
         loading: false,
       };
 
     case CREATE_LEARNING_NOTE_SUCCESS:
       return {
         ...state,
-        learningNotes: [action.payload, ...state.learningNotes],
-        loading: false,
+        notes: [action.payload, ...state.notes]
       };
 
     case ARCHIVE_LEARNING_NOTE_SUCCESS:
     case DELETE_LEARNING_NOTE_SUCCESS:
-      noteList = state.learningNotes.filter(function (note) {
+      noteList = state.notes.filter(function (note) {
         return note.id !== action.noteId;
       });
 
       return {
         ...state,
-        learningNotes: noteList,
+        notes: noteList,
         loading: false,
       };
 
     case UPDATE_LEARNING_NOTE_SUCCESS:
       const updatedLearningNote = action.payload;
-      noteList = state.learningNotes.map((note) =>
+      updatedList = state.notes.map((note) =>
         note.id === updatedLearningNote.id ? updatedLearningNote : note
       );
 
       return {
         ...state,
-        learningNotes: noteList,
+        notes: updatedList,
         loading: false,
       };
 
@@ -100,46 +108,50 @@ const learningNoteReducer = (state = initialState, action) => {
       };
 
     case ADD_LABEL_TO_NOTE_SUCCESS:
+      noteList = state.notes;
+      updatedList = noteList.map((note) =>
+        note.id === action.payload.noteId
+          ? { ...note, labels: [...note.labels, action.payload.labelId] }
+          : note
+      );
       return {
         ...state,
-        learningNotes: state.learningNotes.map((note) =>
-          note.id === action.payload.noteId
-            ? { ...note, labels: [...note.labels, action.payload.labelId] }
-            : note
-        ),
+        notes: updatedList
       };
 
     case REMOVE_LABEL_FROM_NOTE_SUCCESS:
+      noteList = state.learningNotes.results;
+      updatedList = noteList.map((note) =>
+        note.id === action.payload.noteId
+          ? {
+              ...note,
+              labels: note.labels.filter(
+                (labelId) => labelId !== action.payload.labelId
+              ),
+            }
+          : note
+      );
       return {
         ...state,
-        learningNotes: state.learningNotes.map((note) =>
-          note.id === action.payload.noteId
-            ? {
-                ...note,
-                labels: note.labels.filter(
-                  (labelId) => labelId !== action.payload.labelId
-                ),
-              }
-            : note
-        ),
+        notes: updatedList,
       };
 
     case REMOVE_NOTE_FROM_LIST:
+      updatedList = state.learningNotes.results.filter(
+        (note) => note.id !== action.payload
+      );
       return {
         ...state,
-        learningNotes: state.learningNotes.filter(
-          (note) => note.id !== action.payload
-        ),
+        notes: updatedList,
       };
 
     case MOVE_TO_COLLECTION_SUCCESS:
+      updatedList = state.learningNotes.results.map((note) =>
+        note.id === action.payload.noteInfo.id ? action.payload.noteInfo : note
+      );
       return {
         ...state,
-        learningNotes: state.learningNotes.map((note) =>
-          note.id === action.payload.noteInfo.id
-            ? action.payload.noteInfo
-            : note
-        ),
+        notes: updatedList,
       };
     default:
       return state;

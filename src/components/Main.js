@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLabels } from "../actions/labelActions";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import CollectionList from "./CollectionList";
 import LearningNoteList from "./LearningNoteList";
@@ -6,8 +8,18 @@ import LabelList from "./LabelList";
 
 const Main = () => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+
+  const userInfo = useSelector((state) => state.userLogin.userInfo);
+
+  // Since both LearningNoteList and LabelList both need to fetch labels,
+  // it makes more sense to place fetchLabels in this component
+  // instead of duplicating it inside LearningNoteList and LabelList
+  useEffect(() => {
+    dispatch(fetchLabels(userInfo));
+  }, [dispatch, userInfo]);
 
   return (
     <div style={{ padding: "1rem" }}>
