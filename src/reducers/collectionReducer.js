@@ -6,6 +6,7 @@ import {
   COLLECTION_CREATE_FAILURE,
   COLLECTION_ARCHIVE_SUCCESS,
   COLLECTION_ARCHIVE_FAILURE,
+  RESET_COLLECTIONS,
 } from "../actions/collectionActions";
 
 const defaultCategory = { id: 0, name: "All notes" };
@@ -53,6 +54,10 @@ export const collectionListReducer = (state = initialState, action) => {
         collections: state.collections.filter(
           (collection) => collection.id !== action.payload.collectionId
         ),
+      };
+    case RESET_COLLECTIONS:
+      return {
+        collections: [],
       };
     default:
       return state;

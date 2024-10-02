@@ -13,6 +13,8 @@ export const COLLECTION_CREATE_FAILURE = "COLLECTION_CREATE_FAILURE";
 export const COLLECTION_ARCHIVE_SUCCESS = "COLLECTION_ARCHIVE_SUCCESS";
 export const COLLECTION_ARCHIVE_FAILURE = "COLLECTION_ARCHIVE_FAILURE";
 
+export const RESET_COLLECTIONS = "RESET_COLLECTIONS";
+
 export const fetchCollections = (userInfo) => async (dispatch) => {
   try {
     dispatch({ type: COLLECTIONS_FETCH_REQUEST });

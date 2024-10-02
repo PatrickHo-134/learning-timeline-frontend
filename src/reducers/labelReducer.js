@@ -6,6 +6,7 @@ import {
   LABEL_CREATE_FAILURE,
   LABEL_DELETE_SUSSCESS,
   LABEL_DELETE_FAILURE,
+  RESET_LABELS,
 } from "../actions/labelActions";
 
 const initialState = {
@@ -52,6 +53,10 @@ export const labelListReducer = (state = initialState, action) => {
           (label) => label.id !== action.payload.labelId
         ),
       };
+    case RESET_LABELS:
+      return {
+        labels: [],
+      }
 
     default:
       return state;

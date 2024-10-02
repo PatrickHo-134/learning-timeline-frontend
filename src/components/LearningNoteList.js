@@ -21,7 +21,7 @@ const LearningNoteList = () => {
   );
   const userInfo = useSelector((state) => state.userLogin.userInfo);
   const { selectedCategory, selectedLabels } = useSelector((state) => state.pageFilter);
-  const selectedCollectionName = allCollections.filter((coll) => coll.id === selectedCategory)[0].name;
+  const selectedCollectionName = allCollections.filter((coll) => coll.id === selectedCategory)[0]?.name;
 
   useEffect(() => {
     if (userInfo) {
