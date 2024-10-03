@@ -19,6 +19,7 @@ import {
   MOVE_TO_COLLECTION_SUCCESS,
   MOVE_TO_COLLECTION_FAILURE,
   REMOVE_NOTE_FROM_LIST,
+  RESET_LEARNING_NOTES,
 } from "../actions/learningNoteActions";
 import { LOGOUT, REGISTER_SUCCESS } from "../actions/userActions";
 
@@ -141,6 +142,12 @@ const learningNoteReducer = (state = initialState, action) => {
             : note
         ),
       };
+
+    case RESET_LEARNING_NOTES:
+      return {
+        learningNotes: [],
+      };
+
     default:
       return state;
   }

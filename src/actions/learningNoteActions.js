@@ -2,6 +2,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { apiBaseUrl } from "../appConfig";
 
+export const RESET_LEARNING_NOTES = "RESET_LEARNING_NOTES";
+
 //// FETCH LEARNING NOTES
 // Action Types
 export const FETCH_LEARNING_NOTES_REQUEST = "FETCH_LEARNING_NOTES_REQUEST";

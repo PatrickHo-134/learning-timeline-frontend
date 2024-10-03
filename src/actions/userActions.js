@@ -1,5 +1,8 @@
 import axios from "axios";
 import { apiBaseUrl } from "../appConfig";
+import { RESET_COLLECTIONS } from "./collectionActions";
+import { RESET_LABELS } from "./labelActions";
+import { RESET_LEARNING_NOTES } from "./learningNoteActions";
 
 // user login
 
@@ -55,6 +58,10 @@ export const logout = (dispatch) => {
   localStorage.removeItem("userInfo");
 
   dispatch({ type: LOGOUT });
+
+  dispatch({ type: RESET_LEARNING_NOTES });
+  dispatch({ type: RESET_LABELS });
+  dispatch({ type: RESET_COLLECTIONS });
 };
 
 

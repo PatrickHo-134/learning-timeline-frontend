@@ -13,6 +13,8 @@ export const LABEL_CREATE_FAILURE = "LABEL_CREATE_FAILURE";
 export const LABEL_DELETE_SUSSCESS = "LABEL_DELETE_SUSSCESS";
 export const LABEL_DELETE_FAILURE = "LABEL_DELETE_FAILURE";
 
+export const RESET_LABELS = "RESET_LABELS";
+
 export const fetchLabels = (userInfo) => async (dispatch) => {
   try {
     dispatch({ type: LABELS_FETCH_REQUEST });
