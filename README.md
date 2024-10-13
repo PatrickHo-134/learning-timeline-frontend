@@ -1,8 +1,8 @@
 # Learning Timeline - Frontend
 
-The **Learning Note App** is a full-stack web application designed to help users create, organize, and archive learning notes, promoting efficient self-paced learning and personal development. The project is built using modern web technologies like **React.js** and **Redux** on the frontend, and it communicates with a backend API developed with **Python** and **Django**.
+The **Learning Timeline App** is a full-stack web application designed to help users create, organize, and archive learning notes, promoting efficient self-paced learning and personal development. The project is built using modern web technologies like **React.js** and **Redux** on the frontend, and it communicates with a backend API developed with **Python** and **Django**.
 
-This repository contains the **frontend** part of the project, which consumes the API provided by the [Learning Note API](https://github.com/PatrickHo-134/learning-timeline-api). The frontend is responsible for delivering a seamless and responsive user experience, handling user interactions, rendering learning notes, collections, and labels, and managing state with Redux for efficient data flow across the application.
+This repository contains the **frontend** part of the project, which consumes the API provided by the [Learning Timeline API](https://github.com/PatrickHo-134/learning-timeline-api). The frontend is responsible for delivering a seamless and responsive user experience, handling user interactions, rendering learning notes, collections, and labels, and managing state with Redux for efficient data flow across the application.
 
 Key features include:
 
@@ -11,11 +11,11 @@ Key features include:
 - **Collections:** Notes can be grouped into collections, allowing users to better organize and archive their content based on topics, courses, or other personal preferences.
 - **Archiving functionality:** Notes and collections can be archived, allowing users to preserve their progress and maintain focus on their current learning tasks.
 
-You can explore the live demo of the end product by visiting this link: [Learning Note App](https://learning-timeline-1010897e960e.herokuapp.com/).
+You can explore the live demo of the end product by visiting this link: [Learning Timeline App](https://learning-timeline-1010897e960e.herokuapp.com/).
 
 ## Features
 
-The Learning Note App comes with a variety of features designed to enhance the process of learning, organizing, and self-paced study. Below are the key features offered by the frontend:
+The Learning Timeline App comes with a variety of features designed to enhance the process of learning, organizing, and self-paced study. Below are the key features offered by the frontend:
 
 ### 1. Learning Notes Management
 - Users can create, view, edit, and delete rich-text learning notes.
@@ -62,7 +62,7 @@ The Learning Note App comes with a variety of features designed to enhance the p
 - Node.js (v14.x or higher) and npm (or yarn) installed
 
 ## Setup and Installation
-Follow the steps below to set up and run the Learning Note App frontend locally:
+Follow the steps below to set up and run the Learning Timeline App frontend locally:
 
 ### 1. Clone the repository
 Start by cloning the frontend repository from GitHub to your local machine using Git:
@@ -129,7 +129,7 @@ http://localhost:3000
 If it doesn’t open automatically, you can manually access it by typing the URL into your browser.
 
 ### 5. Run backend server
-Make sure the backend server (the Learning Note API) is running, so the frontend can communicate with it for fetching and saving learning notes. You can find the setup instructions for the backend [here](https://github.com/PatrickHo-134/learning-timeline-api).
+Make sure the backend server (the Learning Timeline API) is running, so the frontend can communicate with it for fetching and saving learning notes. You can find the setup instructions for the backend [here](https://github.com/PatrickHo-134/learning-timeline-api).
 
 4.6. Building for Production
 When you are ready to deploy the frontend app for production, you can create an optimized build by running:
