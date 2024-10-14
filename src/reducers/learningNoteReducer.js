@@ -19,6 +19,7 @@ import {
   MOVE_TO_COLLECTION_SUCCESS,
   MOVE_TO_COLLECTION_FAILURE,
   REMOVE_NOTE_FROM_LIST,
+  CLEAR_LEARNING_NOTES,
 } from "../actions/learningNoteActions";
 import { LOGOUT, REGISTER_SUCCESS } from "../actions/userActions";
 
@@ -46,8 +47,8 @@ const learningNoteReducer = (state = initialState, action) => {
       };
 
     case FETCH_LEARNING_NOTES_SUCCESS:
-      const { next_page, previous_page, count, current_page, total_pages } = action.payload;
-      updatedList = [ ...state.notes, ...action.payload.results];
+      const { next_page, previous_page, count, current_page, total_pages, results } = action.payload;
+      updatedList = [ ...state.notes, ...results];
       return {
         ...state,
         notes: updatedList,
@@ -153,6 +154,17 @@ const learningNoteReducer = (state = initialState, action) => {
         ...state,
         notes: updatedList,
       };
+
+    case CLEAR_LEARNING_NOTES:
+      return {
+        ...state,
+        notes: [],
+        currentPage: 1,
+        nextPage: null,
+        totalPages: null,
+        totalCount: null,
+      };
+
     default:
       return state;
   }

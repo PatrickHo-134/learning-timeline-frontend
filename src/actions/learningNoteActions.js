@@ -2,6 +2,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { apiBaseUrl } from "../appConfig";
 
+export const CLEAR_LEARNING_NOTES = "CLEAR_LEARNING_NOTES";
+
 //// FETCH LEARNING NOTES
 
 export const FETCH_LEARNING_NOTES_REQUEST = "FETCH_LEARNING_NOTES_REQUEST";
@@ -22,11 +24,15 @@ export const fetchLearningNotesFailure = (error) => ({
   payload: error,
 });
 
-export const fetchLearningNotes = (selectedCategory = 0, pageNumber = 1) => {
+export const clearLearningNotes = () => ({
+  type: CLEAR_LEARNING_NOTES,
+});
+
+export const fetchLearningNotes = (pageNumber = 1) => {
   return (dispatch, getState) => {
     const {
       userLogin: { userInfo },
-      pageFilter: { selectedLabels },
+      pageFilter: { selectedCategory, selectedLabels },
     } = getState();
 
     if (!userInfo || !userInfo.token) {
@@ -34,6 +40,10 @@ export const fetchLearningNotes = (selectedCategory = 0, pageNumber = 1) => {
       dispatch(fetchLearningNotesFailure(errorMessage));
       toast.error(errorMessage);
       return;
+    }
+
+    if (pageNumber === 1) {
+      dispatch(clearLearningNotes());
     }
 
     const config = {
@@ -346,7 +356,7 @@ export const moveNoteToCollection =
         },
       };
 
-      const { data } = await axios.put(
+      await axios.put(
         `${apiBaseUrl}/api/learning_notes/${noteInfo.id}/add_to_collection/`,
         { collectionId: collectionId },
         config

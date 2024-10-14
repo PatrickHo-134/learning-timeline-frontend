@@ -11,15 +11,16 @@ import AddLearningNoteModal from "./AddLearningNoteModal";
 const LearningNoteList = () => {
   const dispatch = useDispatch();
 
-  const [pageNumber, setPageNumber] = useState(1);
-
-  const observer = useRef();
-
   const {
     notes: learningNoteList,
     loading,
     nextPage,
+    totalPages,
   } = useSelector((state) => state.learningNotes);
+
+  const [pageNumber, setPageNumber] = useState(1);
+  const observer = useRef();
+
   const allCollections = useSelector(
     (state) => state.collectionList.collections
   );
@@ -31,23 +32,30 @@ const LearningNoteList = () => {
   )[0]?.name;
 
   useEffect(() => {
-    if (userInfo) {
-      dispatch(fetchLearningNotes(selectedCategory, pageNumber));
+    if (userInfo && selectedCategory !== undefined && selectedCategory !== null) {
+      setPageNumber(1);
+      dispatch(fetchLearningNotes(1));
     }
-  }, [dispatch, userInfo, selectedCategory, pageNumber]);
+  }, [dispatch, userInfo, selectedCategory]);
+
+  useEffect(() => {
+    if (pageNumber > 1 && !loading) {
+      dispatch(fetchLearningNotes(pageNumber));
+    }
+  }, [dispatch, pageNumber]);
 
   const lastNoteRef = (node) => {
     if (loading) return; // Don't observe while loading
 
-    if (observer.current) observer.current.disconnect(); // Disconnect previous observer
+    if (observer.current) observer.current.disconnect();
 
     observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && nextPage) {
-        setPageNumber((prevPage) => prevPage + 1); // Load next page when user reaches the bottom
+      if (entries[0].isIntersecting && nextPage && pageNumber < totalPages) {
+        setPageNumber((prevPage) => prevPage + 1);
       }
     });
 
-    if (node) observer.current.observe(node); // Observe the last note
+    if (node) observer.current.observe(node);
   };
 
   const handleAddNote = (newNote) => {

@@ -15,14 +15,13 @@ import {
   archiveCollection,
 } from "../actions/collectionActions";
 import AddCollectionForm from "./AddCollectionForm";
-import { fetchLearningNotes } from "../actions/learningNoteActions";
 import { setCategoryFilter } from "../actions/pageFilterActions";
 import { appVersion } from "../appConfig";
 
 const CollectionList = () => {
   const dispatch = useDispatch();
   const [hoveredCollectionId, setHoveredCollectionId] = useState(null);
-  const [selectedCollectionId, setSelectedCollectionId] = useState(null);
+  const [selectedCollectionId, setSelectedCollectionId] = useState(0);
   const { collections, loading, error } = useSelector(
     (state) => state.collectionList
   );
@@ -34,7 +33,6 @@ const CollectionList = () => {
 
   const handleCollectionSelect = (collectionId) => {
     setSelectedCollectionId(collectionId);
-    dispatch(fetchLearningNotes(collectionId, 1)); // when selecting a category, always fetch notes again from page 1
     dispatch(setCategoryFilter(collectionId));
   };
 
