@@ -184,7 +184,7 @@ export const deleteLearningNote = (noteId, userInfo) => {
       })
       .then((response) => {
         dispatch(deleteLearningNoteSuccess(noteId));
-        toast.error("Note deleted successfully");
+        toast.success("Note deleted successfully");
       })
       .catch((response) => {
         const errorMessage =
