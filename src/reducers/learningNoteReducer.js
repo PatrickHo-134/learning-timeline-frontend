@@ -138,7 +138,7 @@ const learningNoteReducer = (state = initialState, action) => {
       };
 
     case REMOVE_NOTE_FROM_LIST:
-      updatedList = state.learningNotes.results.filter(
+      updatedList = state.notes.results.filter(
         (note) => note.id !== action.payload
       );
       return {
