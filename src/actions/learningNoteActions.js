@@ -138,7 +138,7 @@ export const archiveLearningNote = (noteId, userInfo) => {
       })
       .then((response) => {
         dispatch(archiveLearningNoteSuccess(noteId));
-        toast.error("Note archived successfully");
+        toast.success("Note archived successfully");
       })
       .catch((response) => {
         const errorMessage =
