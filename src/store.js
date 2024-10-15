@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['userLogin', 'learningNotes', 'labelList', 'collectionList'], // Specify which reducers you want to persist
+  whitelist: ['userLogin', 'learningNotes', 'labelList', 'collectionList'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -24,6 +24,7 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
   preloadedState: initialState,
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export const persistor = persistStore(store);
