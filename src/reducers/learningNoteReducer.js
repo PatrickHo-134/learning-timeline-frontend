@@ -121,7 +121,7 @@ const learningNoteReducer = (state = initialState, action) => {
       };
 
     case REMOVE_LABEL_FROM_NOTE_SUCCESS:
-      noteList = state.learningNotes.results;
+      noteList = state.notes;
       updatedList = noteList.map((note) =>
         note.id === action.payload.noteId
           ? {
