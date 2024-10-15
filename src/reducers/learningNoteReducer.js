@@ -147,8 +147,8 @@ const learningNoteReducer = (state = initialState, action) => {
       };
 
     case MOVE_TO_COLLECTION_SUCCESS:
-      updatedList = state.learningNotes.results.map((note) =>
-        note.id === action.payload.noteInfo.id ? action.payload.noteInfo : note
+      updatedList = state.notes.map((note) =>
+        note.id === action.payload.id ? action.payload : note
       );
       return {
         ...state,
