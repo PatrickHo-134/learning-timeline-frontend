@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { apiBaseUrl } from "../appConfig";
 
 export const CLEAR_LEARNING_NOTES = "CLEAR_LEARNING_NOTES";
+export const RESET_LEARNING_NOTES = "RESET_LEARNING_NOTES";
 
 //// FETCH LEARNING NOTES
 
