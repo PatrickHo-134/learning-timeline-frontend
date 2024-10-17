@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchLabels, deleteLabel } from "../actions/labelActions";
+import { deleteLabel } from "../actions/labelActions";
 import { CircularProgress, Box } from "@mui/material";
 import LabelForm from "./LabelForm";
 import MainLabel from "./MainLabel";
@@ -11,10 +11,6 @@ const LabelList = () => {
 
   const labelList = useSelector((state) => state.labelList);
   const { loading, error, labels } = labelList;
-
-  useEffect(() => {
-    dispatch(fetchLabels());
-  }, [dispatch]);
 
   const handleRemoveLabel = (labelId) => {
     dispatch(deleteLabel(labelId));

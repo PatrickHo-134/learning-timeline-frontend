@@ -2,15 +2,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { apiBaseUrl } from "../appConfig";
 
+export const CLEAR_LEARNING_NOTES = "CLEAR_LEARNING_NOTES";
 export const RESET_LEARNING_NOTES = "RESET_LEARNING_NOTES";
 
 //// FETCH LEARNING NOTES
-// Action Types
+
 export const FETCH_LEARNING_NOTES_REQUEST = "FETCH_LEARNING_NOTES_REQUEST";
 export const FETCH_LEARNING_NOTES_SUCCESS = "FETCH_LEARNING_NOTES_SUCCESS";
 export const FETCH_LEARNING_NOTES_FAILURE = "FETCH_LEARNING_NOTES_FAILURE";
 
-// Action Creators
 export const fetchLearningNotesRequest = () => ({
   type: FETCH_LEARNING_NOTES_REQUEST,
 });
@@ -25,31 +25,53 @@ export const fetchLearningNotesFailure = (error) => ({
   payload: error,
 });
 
-export const fetchLearningNotes = ({ collectionId, labels, userInfo }) => {
-  const config = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${userInfo.token}`,
-    },
-    params: {
-      collection_id: collectionId,
-      labels: labels,
-    },
-  };
+export const clearLearningNotes = () => ({
+  type: CLEAR_LEARNING_NOTES,
+});
 
-  return (dispatch) => {
+export const fetchLearningNotes = (pageNumber = 1) => {
+  return (dispatch, getState) => {
+    const {
+      userLogin: { userInfo },
+      pageFilter: { selectedCategory, selectedLabels },
+    } = getState();
+
+    if (!userInfo || !userInfo.token) {
+      const errorMessage = "User authentication is missing. Please log in.";
+      dispatch(fetchLearningNotesFailure(errorMessage));
+      toast.error(errorMessage);
+      return;
+    }
+
+    if (pageNumber === 1) {
+      dispatch(clearLearningNotes());
+    }
+
+    const config = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      params: {
+        collection_id: selectedCategory,
+        labels: selectedLabels,
+        page: pageNumber,
+      },
+    };
+
     dispatch(fetchLearningNotesRequest());
+
     axios
       .get(`${apiBaseUrl}/api/timeline/${userInfo.id}/`, config)
       .then((response) => {
         const learningNotes = response.data;
         dispatch(fetchLearningNotesSuccess(learningNotes));
       })
-      .catch((response) => {
+      .catch((error) => {
         const errorMessage =
-          response?.response?.data?.error ||
-          "Error occurred when loading learning notes";
+          error?.response?.data?.error ||
+          "Error occurred while loading learning notes";
         dispatch(fetchLearningNotesFailure(errorMessage));
         toast.error(errorMessage);
       });
@@ -243,7 +265,6 @@ export const updateLearningNote = (noteId, data, userInfo) => {
   };
 };
 
-
 //// ADD LABEL TO LEARNING NOTE
 
 export const ADD_LABEL_TO_NOTE_SUCCESS = "ADD_LABEL_TO_NOTE_SUCCESS";
@@ -279,7 +300,6 @@ export const addLabelToLearningNote =
     }
   };
 
-
 //// REMOVE LABEL TO LEARNING NOTE
 
 export const REMOVE_LABEL_FROM_NOTE_SUCCESS = "REMOVE_LABEL_FROM_NOTE_SUCCESS";
@@ -314,7 +334,6 @@ export const removeLabelFromLearningNote =
     }
   };
 
-
 //// ADD LEARNING NOTE TO CATEGORY
 
 export const MOVE_TO_COLLECTION_SUCCESS = "MOVE_TO_COLLECTION_SUCCESS";
@@ -338,7 +357,7 @@ export const moveNoteToCollection =
         },
       };
 
-      const { data } = await axios.put(
+      await axios.put(
         `${apiBaseUrl}/api/learning_notes/${noteInfo.id}/add_to_collection/`,
         { collectionId: collectionId },
         config
@@ -350,7 +369,7 @@ export const moveNoteToCollection =
           payload: noteInfo.id,
         });
       } else {
-        const updatedNote = {...noteInfo, collection: collectionId};
+        const updatedNote = { ...noteInfo, collection: collectionId };
         dispatch({
           type: MOVE_TO_COLLECTION_SUCCESS,
           payload: { noteInfo: updatedNote, collectionId: collectionId },
