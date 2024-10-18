@@ -1,3 +1,8 @@
+.quill.edit-learning-note-content .ql-container .ql-editor {
+     min-height: 10rem;
+     max-height: 30rem;
+}
+
 .ql-container {
      font-size: 16px !important;
 }

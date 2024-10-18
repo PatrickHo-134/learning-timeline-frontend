@@ -29,7 +29,7 @@ const EditLearningNoteModal = ({ learningNote, onClose }) => {
           bgcolor: "background.paper",
           p: 3,
           borderRadius: 2,
-          minWidth: "70%",
+          minWidth: "80%",
           maxHeight: "90%",
         }}
       >
