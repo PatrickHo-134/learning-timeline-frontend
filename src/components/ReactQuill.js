@@ -7,7 +7,6 @@ import '../custom-quill-styles.css';
 export const ReadOnlyContent = ({ content }) => {
   return (
     <Box component="section" sx={{
-      bgcolor: "background.paper",
       margin: 1,
     }}
     >

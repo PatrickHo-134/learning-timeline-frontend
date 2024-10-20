@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 import { apiBaseUrl } from "../appConfig";
 
 export const CLEAR_LEARNING_NOTES = "CLEAR_LEARNING_NOTES";
-export const RESET_LEARNING_NOTES = "RESET_LEARNING_NOTES";
 
 //// FETCH LEARNING NOTES
 
@@ -372,7 +371,7 @@ export const moveNoteToCollection =
         const updatedNote = { ...noteInfo, collection: collectionId };
         dispatch({
           type: MOVE_TO_COLLECTION_SUCCESS,
-          payload: { noteInfo: updatedNote, collectionId: collectionId },
+          payload: updatedNote,
         });
       }
 
