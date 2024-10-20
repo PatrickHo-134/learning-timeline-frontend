@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Chip } from "@mui/material";
-import { Close as CloseIcon } from "@mui/icons-material";
+import { Cancel as CloseIcon } from "@mui/icons-material";
 
 function LearningNoteLabel({ labelId, labelList = [], onRemoveLabel }) {
   const [hovered, setHovered] = useState(false);
@@ -17,6 +17,7 @@ function LearningNoteLabel({ labelId, labelList = [], onRemoveLabel }) {
   } else {
     return (
       <Chip
+        variant="outlined"
         key={labelInfo.id}
         label={labelInfo.name}
         size="small"
@@ -26,7 +27,7 @@ function LearningNoteLabel({ labelId, labelList = [], onRemoveLabel }) {
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        deleteIcon={hovered ? <CloseIcon /> : <div></div>}
+        deleteIcon={hovered ? <CloseIcon variant="outlined"/> : <div></div>}
         onDelete={() => onRemoveLabel(labelId)}
       />
     );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Chip } from "@mui/material";
-import { Close as CloseIcon } from "@mui/icons-material";
+import { Cancel as CloseIcon } from "@mui/icons-material";
 
 function MainLabel({ labelInfo, onRemoveLabel }) {
   const [hovered, setHovered] = useState(false);
@@ -8,6 +8,7 @@ function MainLabel({ labelInfo, onRemoveLabel }) {
 
   return (
     <Chip
+      variant="outlined"
       key={id}
       label={name}
       style={{ backgroundColor: color, minWidth: "6rem" }}
