@@ -121,7 +121,7 @@ const learningNoteReducer = (state = initialState, action) => {
       };
 
     case REMOVE_LABEL_FROM_NOTE_SUCCESS:
-      noteList = state.learningNotes.results;
+      noteList = state.notes;
       updatedList = noteList.map((note) =>
         note.id === action.payload.noteId
           ? {
@@ -138,7 +138,7 @@ const learningNoteReducer = (state = initialState, action) => {
       };
 
     case REMOVE_NOTE_FROM_LIST:
-      updatedList = state.notes.results.filter(
+      updatedList = state.notes.filter(
         (note) => note.id !== action.payload
       );
       return {
