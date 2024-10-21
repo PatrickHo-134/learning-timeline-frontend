@@ -34,7 +34,7 @@ import {
 import EditLearningNoteModal from "./EditLearningNoteModal";
 import LabelSelectPopover from "./LabelSelectPopover";
 import LearningNoteLabel from "./LearningNoteLabel";
-import { AutoHeightQuill } from "./ReactQuill";
+import { ReadOnlyContent } from "./ReactQuill";
 import AddToCollectionModal from "./AddToCollectionModal";
 
 const CategoryTag = ({ tagName }) => {
@@ -256,7 +256,7 @@ const LearningNoteCard = ({ learningNote }) => {
         />
 
         <Collapse in={isContentVisible} timeout="auto">
-          <AutoHeightQuill content={content} />
+          <ReadOnlyContent content={content} />
         </Collapse>
       </CardContent>
 

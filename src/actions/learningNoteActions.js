@@ -371,7 +371,7 @@ export const moveNoteToCollection =
         const updatedNote = { ...noteInfo, collection: collectionId };
         dispatch({
           type: MOVE_TO_COLLECTION_SUCCESS,
-          payload: { noteInfo: updatedNote, collectionId: collectionId },
+          payload: updatedNote,
         });
       }
 

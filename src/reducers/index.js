@@ -4,8 +4,9 @@ import { userRegisterReducer, userLoginReducer } from './userReducer';
 import { labelListReducer } from './labelReducer';
 import { collectionListReducer } from './collectionReducer';
 import { pageFilterReducer } from './pageFilterReducer';
+import { LOGOUT } from '../actions/userActions';
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   learningNotes: learningNoteReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
@@ -14,4 +15,10 @@ const rootReducer = combineReducers({
   pageFilter: pageFilterReducer,
 });
 
+const rootReducer = (state, action) => {
+  if (action.type === LOGOUT) {
+    state = undefined;
+  }
+  return appReducer(state, action);
+}
 export default rootReducer;
