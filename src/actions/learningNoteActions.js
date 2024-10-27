@@ -159,7 +159,7 @@ export const archiveLearningNote = (noteId, userInfo) => {
       })
       .then((response) => {
         dispatch(archiveLearningNoteSuccess(noteId));
-        toast.error("Note archived successfully");
+        toast.success("Note archived successfully");
       })
       .catch((response) => {
         const errorMessage =
@@ -205,7 +205,7 @@ export const deleteLearningNote = (noteId, userInfo) => {
       })
       .then((response) => {
         dispatch(deleteLearningNoteSuccess(noteId));
-        toast.error("Note deleted successfully");
+        toast.success("Note deleted successfully");
       })
       .catch((response) => {
         const errorMessage =
