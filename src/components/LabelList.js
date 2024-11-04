@@ -5,6 +5,7 @@ import { CircularProgress, Box } from "@mui/material";
 import LabelForm from "./LabelForm";
 import MainLabel from "./MainLabel";
 import { Container } from "react-bootstrap";
+import { addLabelFilter, removeLabelFilter } from "../actions/pageFilterActions";
 
 const LabelList = () => {
   const dispatch = useDispatch();
@@ -12,8 +13,18 @@ const LabelList = () => {
   const labelList = useSelector((state) => state.labelList);
   const { loading, error, labels } = labelList;
 
+  const selectedLabels = useSelector((state) => state.pageFilter.selectedLabels);
+
   const handleRemoveLabel = (labelId) => {
     dispatch(deleteLabel(labelId));
+  };
+
+  const onLabelClick = (labelId) => {
+    if (selectedLabels.includes(labelId)) {
+      dispatch(removeLabelFilter(labelId));
+    } else {
+      dispatch(addLabelFilter(labelId));
+    }
   };
 
   return (
@@ -37,7 +48,9 @@ const LabelList = () => {
             <MainLabel
               key={label.id}
               labelInfo={label}
+              onSelect={onLabelClick}
               onRemoveLabel={handleRemoveLabel}
+              isSelected={selectedLabels.includes(label.id)}
             />
           ))
         ) : (

@@ -34,22 +34,24 @@ const LearningNoteList = () => {
     (state) => state.collectionList.collections
   );
   const userInfo = useSelector((state) => state.userLogin.userInfo);
-  const { selectedCategory } = useSelector((state) => state.pageFilter);
+  const { selectedCategory, selectedLabels } = useSelector((state) => state.pageFilter);
 
   const selectedCollectionName = allCollections.filter(
     (coll) => coll.id === selectedCategory
   )[0]?.name;
 
+  // Fetch notes starting from page 1 when selectedCategory or selectedLabels is updated
   useEffect(() => {
     if (userInfo && selectedCategory !== undefined && selectedCategory !== null) {
       setPageNumber(1);
-      dispatch(fetchLearningNotes(1));
+      dispatch(fetchLearningNotes(1, selectedCategory, selectedLabels));
     }
-  }, [dispatch, userInfo, selectedCategory]);
+  }, [dispatch, userInfo, selectedCategory, selectedLabels]);
 
+  // Fetch next page with the same selectedCategory and selectedLabels
   useEffect(() => {
     if (pageNumber > 1 && !loading) {
-      dispatch(fetchLearningNotes(pageNumber));
+      dispatch(fetchLearningNotes(pageNumber, selectedCategory, selectedLabels));
     }
   }, [dispatch, pageNumber]);
 
