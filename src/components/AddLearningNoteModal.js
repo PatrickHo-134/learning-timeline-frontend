@@ -7,16 +7,21 @@ import { NoteContent } from "./ReactQuill";
 
 const AddLearningNoteModal = () => {
   const dispatch = useDispatch();
+
+  const userInfo = useSelector((state) => state.userLogin.userInfo);
+  const { selectedCategory } = useSelector((state) => state.pageFilter);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [labels, setLabels] = useState([]);
-  const userInfo = useSelector((state) => state.userLogin.userInfo);
+  const [category, setCategory] = useState(selectedCategory);
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
     setTitle("");
     setContent("");
+    setCategory(selectedCategory);
     setLabels([]);
   };
 
@@ -26,6 +31,7 @@ const AddLearningNoteModal = () => {
       content,
       created_at: new Date().toISOString(),
       user: userInfo.id,
+      selected_category: category,
       labels,
     };
 
