@@ -11,7 +11,6 @@ import {
 import ArchiveIcon from "@mui/icons-material/Archive";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchCollections,
   archiveCollection,
 } from "../actions/collectionActions";
 import AddCollectionForm from "./AddCollectionForm";
@@ -25,7 +24,6 @@ const CollectionList = () => {
   const { collections, loading, error } = useSelector(
     (state) => state.collectionList
   );
-  const userInfo = useSelector((state) => state.userLogin.userInfo);
 
   const handleArchiveCollection = (collectionId) => {
     dispatch(archiveCollection(collectionId));
@@ -35,10 +33,6 @@ const CollectionList = () => {
     setSelectedCollectionId(collectionId);
     dispatch(setCategoryFilter(collectionId));
   };
-
-  useEffect(() => {
-    dispatch(fetchCollections(userInfo));
-  }, [dispatch, userInfo]);
 
   useEffect(() => {
     if (!loading && collections.length > 0) {

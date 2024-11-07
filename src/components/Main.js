@@ -5,6 +5,7 @@ import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import CollectionList from "./CollectionList";
 import LearningNoteList from "./LearningNoteList";
 import LabelList from "./LabelList";
+import { fetchCollections } from "../actions/collectionActions";
 
 const Main = () => {
   const theme = useTheme();
@@ -19,6 +20,10 @@ const Main = () => {
   // instead of duplicating it inside LearningNoteList and LabelList
   useEffect(() => {
     dispatch(fetchLabels(userInfo));
+  }, [dispatch, userInfo]);
+  // Same with CollectionList
+  useEffect(() => {
+    dispatch(fetchCollections(userInfo));
   }, [dispatch, userInfo]);
 
   return (
