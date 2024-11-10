@@ -28,11 +28,10 @@ export const clearLearningNotes = () => ({
   type: CLEAR_LEARNING_NOTES,
 });
 
-export const fetchLearningNotes = (pageNumber = 1) => {
+export const fetchLearningNotes = (pageNumber = 1, selectedCategory, selectedLabels) => {
   return (dispatch, getState) => {
     const {
       userLogin: { userInfo },
-      pageFilter: { selectedCategory, selectedLabels },
     } = getState();
 
     if (!userInfo || !userInfo.token) {
@@ -54,7 +53,7 @@ export const fetchLearningNotes = (pageNumber = 1) => {
       },
       params: {
         collection_id: selectedCategory,
-        labels: selectedLabels,
+        labels: JSON.stringify(selectedLabels),
         page: pageNumber,
       },
     };
