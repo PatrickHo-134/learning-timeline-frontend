@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress, Container } from "@mui/material";
 import {
   fetchLearningNotes,
-  createLearningNote,
 } from "../actions/learningNoteActions";
 import LearningNoteCard from "./LearningNoteCard";
 import AddLearningNoteModal from "./AddLearningNoteModal";
@@ -69,15 +68,11 @@ const LearningNoteList = () => {
     if (node) observer.current.observe(node);
   };
 
-  const handleAddNote = (newNote) => {
-    dispatch(createLearningNote(newNote));
-  };
-
   return (
     <Container maxWidth="md">
       <h2>{selectedCollectionName}</h2>
 
-      <AddLearningNoteModal onAddNote={handleAddNote} />
+      <AddLearningNoteModal />
 
       {Array.isArray(learningNoteList) && learningNoteList.length === 0 ? (
         <p>Your Timeline is empty. Let's create your first note.</p>
