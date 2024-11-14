@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress, Container } from "@mui/material";
-import {
-  fetchLearningNotes,
-} from "../actions/learningNoteActions";
+import { fetchLearningNotes } from "../actions/learningNoteActions";
 import LearningNoteCard from "./LearningNoteCard";
 import AddLearningNoteModal from "./AddLearningNoteModal";
 
@@ -24,6 +22,8 @@ const LearningNoteList = () => {
     loading,
     nextPage,
     totalPages,
+    searching,
+    searchedNotes,
   } = useSelector((state) => state.learningNotes);
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -33,7 +33,9 @@ const LearningNoteList = () => {
     (state) => state.collectionList.collections
   );
   const userInfo = useSelector((state) => state.userLogin.userInfo);
-  const { selectedCategory, selectedLabels } = useSelector((state) => state.pageFilter);
+  const { selectedCategory, selectedLabels } = useSelector(
+    (state) => state.pageFilter
+  );
 
   const selectedCollectionName = allCollections.filter(
     (coll) => coll.id === selectedCategory
@@ -41,7 +43,11 @@ const LearningNoteList = () => {
 
   // Fetch notes starting from page 1 when selectedCategory or selectedLabels is updated
   useEffect(() => {
-    if (userInfo && selectedCategory !== undefined && selectedCategory !== null) {
+    if (
+      userInfo &&
+      selectedCategory !== undefined &&
+      selectedCategory !== null
+    ) {
       setPageNumber(1);
       dispatch(fetchLearningNotes(1, selectedCategory, selectedLabels));
     }
@@ -50,7 +56,9 @@ const LearningNoteList = () => {
   // Fetch next page with the same selectedCategory and selectedLabels
   useEffect(() => {
     if (pageNumber > 1 && !loading) {
-      dispatch(fetchLearningNotes(pageNumber, selectedCategory, selectedLabels));
+      dispatch(
+        fetchLearningNotes(pageNumber, selectedCategory, selectedLabels)
+      );
     }
   }, [dispatch, pageNumber]);
 
@@ -74,7 +82,18 @@ const LearningNoteList = () => {
 
       <AddLearningNoteModal />
 
-      {Array.isArray(learningNoteList) && learningNoteList.length === 0 ? (
+      {searching ? (
+        Array.isArray(searchedNotes) && searchedNotes.length === 0 ? (
+          <p>No result found</p>
+        ) : (
+          Array.isArray(searchedNotes) &&
+          searchedNotes.map((note) => (
+            <div key={note.id}>
+              <LearningNoteCard learningNote={note} />
+            </div>
+          ))
+        )
+      ) : Array.isArray(learningNoteList) && learningNoteList.length === 0 ? (
         <p>Your Timeline is empty. Let's create your first note.</p>
       ) : (
         Array.isArray(learningNoteList) &&
@@ -83,7 +102,7 @@ const LearningNoteList = () => {
             key={note.id}
             ref={learningNoteList.length === index + 1 ? lastNoteRef : null}
           >
-            <LearningNoteCard key={note.id} learningNote={note} />
+            <LearningNoteCard learningNote={note} />
           </div>
         ))
       )}

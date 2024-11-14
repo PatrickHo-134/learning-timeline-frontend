@@ -20,6 +20,10 @@ import {
   MOVE_TO_COLLECTION_FAILURE,
   REMOVE_NOTE_FROM_LIST,
   CLEAR_LEARNING_NOTES,
+  SEARCH_LEARNING_NOTE_REQUEST,
+  SEARCH_LEARNING_NOTE_SUCCESS,
+  SEARCH_LEARNING_NOTE_FAILURE,
+  CLEAR_SEARCHED_NOTES,
 } from "../actions/learningNoteActions";
 import { LOGOUT, REGISTER_SUCCESS } from "../actions/userActions";
 
@@ -63,7 +67,7 @@ const learningNoteReducer = (state = initialState, action) => {
     case CREATE_LEARNING_NOTE_SUCCESS:
       return {
         ...state,
-        notes: [action.payload, ...state.notes]
+        notes: [action.payload, ...state.notes],
       };
 
     case ARCHIVE_LEARNING_NOTE_SUCCESS:
@@ -90,12 +94,26 @@ const learningNoteReducer = (state = initialState, action) => {
         loading: false,
       };
 
+    case SEARCH_LEARNING_NOTE_REQUEST:
+      return {
+        ...state,
+        searching: true,
+      };
+
+    case SEARCH_LEARNING_NOTE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        searchedNotes: action.payload,
+      };
+
     case FETCH_LEARNING_NOTES_FAILURE:
     case CREATE_LEARNING_NOTE_FAILURE:
     case ARCHIVE_LEARNING_NOTE_FAILURE:
     case DELETE_LEARNING_NOTE_FAILURE:
     case UPDATE_LEARNING_NOTE_FAILURE:
     case MOVE_TO_COLLECTION_FAILURE:
+    case SEARCH_LEARNING_NOTE_FAILURE:
       return {
         ...state,
         loading: false,
@@ -117,7 +135,7 @@ const learningNoteReducer = (state = initialState, action) => {
       );
       return {
         ...state,
-        notes: updatedList
+        notes: updatedList,
       };
 
     case REMOVE_LABEL_FROM_NOTE_SUCCESS:
@@ -138,9 +156,7 @@ const learningNoteReducer = (state = initialState, action) => {
       };
 
     case REMOVE_NOTE_FROM_LIST:
-      updatedList = state.notes.filter(
-        (note) => note.id !== action.payload
-      );
+      updatedList = state.notes.filter((note) => note.id !== action.payload);
       return {
         ...state,
         notes: updatedList,
@@ -163,6 +179,13 @@ const learningNoteReducer = (state = initialState, action) => {
         nextPage: null,
         totalPages: null,
         totalCount: null,
+      };
+
+    case CLEAR_SEARCHED_NOTES:
+      return {
+        ...state,
+        searchedNotes: [],
+        searching: false,
       };
 
     default:
