@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.5.0] - 17-11-2024
+
+### Removed
+- Irrelevant text shown on timeline
+
+### Added
+- Ability to assign a learning note to collection if the learning note is created when a collection is selected.
+
 ## [2.4.0] - 11-11-2024
 
 ### Fixed
