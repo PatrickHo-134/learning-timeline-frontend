@@ -63,7 +63,8 @@ const learningNoteReducer = (state = initialState, action) => {
     case CREATE_LEARNING_NOTE_SUCCESS:
       return {
         ...state,
-        notes: [action.payload, ...state.notes]
+        notes: [action.payload, ...state.notes],
+        loading: false,
       };
 
     case ARCHIVE_LEARNING_NOTE_SUCCESS:
