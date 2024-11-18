@@ -2,6 +2,8 @@
 
 [Unreleased]
 
+## [2.6.0] - 19-11-2024
+
 ### Added
 - Introduction of the application on landing page.
 
