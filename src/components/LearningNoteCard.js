@@ -133,32 +133,71 @@ const ShowContentButton = ({ showContent, onClickShowContent }) => {
   );
 };
 
+const InformationPopover = ({
+  learningNote,
+  isOpen,
+  anchorEl,
+  onClickHandle,
+}) => {
+  const { created_at, updated_at } = learningNote;
+
+  return (
+    <Popover
+      open={isOpen}
+      anchorEl={anchorEl}
+      onClose={onClickHandle}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "left",
+      }}
+      disableRestoreFocus
+    >
+      <Box sx={{ padding: 1 }}>
+        {updated_at && (
+          <Typography variant="caption">
+            Updated: {moment(updated_at).format("MMMM Do YYYY, h:mm a")}
+            <br />
+          </Typography>
+        )}
+        <Typography variant="caption">
+          Created: {moment(created_at).format("MMMM Do YYYY, h:mm a")}
+          <br />
+        </Typography>
+        <Typography variant="caption">
+          Created {calculateDaysSinceTimestamp(created_at)} day(s) ago
+        </Typography>
+      </Box>
+    </Popover>
+  );
+};
+
 const LearningNoteCard = ({ learningNote }) => {
   const { id, created_at, title, content, updated_at, labels, collection } =
     learningNote;
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [showAddToCollectionModal, setShowAddToCollectionModal] =
-    useState(false);
+  const [showAddToCollectionModal, setShowAddToCollectionModal] = useState(false);
   const [isContentVisible, setIsContentVisible] = useState(false);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [labelPopoverAnchorEl, setLabelPopoverAnchorEl] = useState(null);
-  const isPopoverOpen = Boolean(popoverAnchorEl);
 
   const userInfo = useSelector((state) => state.userLogin.userInfo);
   const labelList = useSelector((state) => state.labelList.labels);
-  const collectionList = useSelector(
-    (state) => state.collectionList.collections
-  );
+  const collectionList = useSelector((state) => state.collectionList.collections);
   const noteCollectionInfo = collectionList.filter((collection) => collection.id === learningNote.collection)[0];
+
   const dispatch = useDispatch();
 
   const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    setMenuAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
+    setMenuAnchorEl(null);
   };
 
   const handleArchive = () => {
@@ -270,8 +309,8 @@ const LearningNoteCard = ({ learningNote }) => {
       </CardContent>
 
       <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
+        anchorEl={menuAnchorEl}
+        open={Boolean(menuAnchorEl)}
         onClose={handleMenuClose}
       >
         <MenuItem onClick={handleEdit}>Edit</MenuItem>
@@ -280,36 +319,12 @@ const LearningNoteCard = ({ learningNote }) => {
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
 
-      <Popover
-        open={isPopoverOpen}
+      <InformationPopover
+        learningNote={learningNote}
+        isOpen={Boolean(popoverAnchorEl)}
         anchorEl={popoverAnchorEl}
-        onClose={handlePopoverClick}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        disableRestoreFocus
-      >
-        <Box sx={{ padding: 1 }}>
-          {updated_at && (
-            <Typography variant="caption">
-              Updated: {moment(updated_at).format("MMMM Do YYYY, h:mm a")}
-              <br />
-            </Typography>
-          )}
-          <Typography variant="caption">
-            Created: {moment(created_at).format("MMMM Do YYYY, h:mm a")}
-            <br />
-          </Typography>
-          <Typography variant="caption">
-            Created {calculateDaysSinceTimestamp(created_at)} day(s) ago
-          </Typography>
-        </Box>
-      </Popover>
+        onClickHandle={handlePopoverClick}
+      />
 
       {showEditModal && (
         <EditLearningNoteModal
