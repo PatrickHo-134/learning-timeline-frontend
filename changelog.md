@@ -1,5 +1,10 @@
 # Changelog
 
+[Unreleased]
+
+### Added
+- Introduction of the application on landing page.
+
 ## [2.5.0] - 17-11-2024
 
 ### Removed
