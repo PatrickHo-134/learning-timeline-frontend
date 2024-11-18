@@ -1,5 +1,10 @@
 # Changelog
 
+### [Unreleased]
+
+### Added
+- Number of days since creation of a learning note.
+
 ## [2.5.0] - 17-11-2024
 
 ### Removed

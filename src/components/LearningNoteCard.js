@@ -37,6 +37,15 @@ import LearningNoteLabel from "./LearningNoteLabel";
 import { ReadOnlyContent } from "./ReactQuill";
 import AddToCollectionModal from "./AddToCollectionModal";
 
+const calculateDaysSinceTimestamp = (timestamptz) => {
+  const currentTimestamp = new Date();
+  const pastTimestamp = new Date(timestamptz);
+  const differenceInMs = currentTimestamp - pastTimestamp;
+  const differenceInDays = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+
+  return differenceInDays;
+};
+
 const CategoryTag = ({ tagName }) => {
   return <Chip label={tagName} icon={<TagIcon />} size="medium" />;
 };
@@ -286,15 +295,19 @@ const LearningNoteCard = ({ learningNote }) => {
         disableRestoreFocus
       >
         <Box sx={{ padding: 1 }}>
-          <Typography variant="caption">
-            Created: {moment(created_at).format("MMMM Do YYYY, h:mm a")}
-          </Typography>
           {updated_at && (
             <Typography variant="caption">
-              <br />
               Updated: {moment(updated_at).format("MMMM Do YYYY, h:mm a")}
+              <br />
             </Typography>
           )}
+          <Typography variant="caption">
+            Created: {moment(created_at).format("MMMM Do YYYY, h:mm a")}
+            <br />
+          </Typography>
+          <Typography variant="caption">
+            Created {calculateDaysSinceTimestamp(created_at)} day(s) ago
+          </Typography>
         </Box>
       </Popover>
 
