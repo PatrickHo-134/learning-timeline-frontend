@@ -93,8 +93,8 @@ const LearningNoteList = () => {
             </div>
           ))
         )
-      ) : Array.isArray(learningNoteList) && learningNoteList.length === 0 ? (
-        <p>Your Timeline is empty. Let's create your first note.</p>
+      ) : Array.isArray(learningNoteList) && learningNoteList.length === 0 && !loading ? (
+        <p>Your Timeline is empty.</p>
       ) : (
         Array.isArray(learningNoteList) &&
         learningNoteList.map((note, index) => (
