@@ -91,7 +91,7 @@ export default function NavBar() {
   };
 
   const handleSearch = () => {
-    if (searchQuery.trim()) {
+    if (searchQuery.trim().length > 0) {
       dispatch(searchLearningNotes(searchQuery));
       setSearchDialogOpen(false);
     }
