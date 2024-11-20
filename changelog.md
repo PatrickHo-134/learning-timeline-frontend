@@ -1,8 +1,10 @@
 # Changelog
 
-[Unreleased]
+## [Unreleased]
 
-## Added
+## [2.7.0] - 21-11-2024
+
+### Added
 - Search bar for searching learning notes.
 
 ## [2.6.0] - 19-11-2024
