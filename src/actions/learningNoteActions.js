@@ -386,3 +386,62 @@ export const moveNoteToCollection =
       toast.error("Failed to add note to category");
     }
   };
+
+//// SEARCH LEARNING NOTES
+
+export const SEARCH_LEARNING_NOTE_REQUEST = "SEARCH_LEARNING_NOTE_REQUEST";
+export const SEARCH_LEARNING_NOTE_SUCCESS = "SEARCH_LEARNING_NOTE_SUCCESS";
+export const SEARCH_LEARNING_NOTE_FAILURE = "SEARCH_LEARNING_NOTE_SUCCESS";
+export const CLEAR_SEARCHED_NOTES = "CLEAR_SEARCHED_NOTES";
+
+export const searchLearningNotes = (searchQuery) => {
+  return (dispatch, getState) => {
+    dispatch({ type: SEARCH_LEARNING_NOTE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    if (!userInfo || !userInfo.token) {
+      const errorMessage = "User authentication is missing. Please log in.";
+      dispatch(fetchLearningNotesFailure(errorMessage));
+      toast.error(errorMessage);
+      return;
+    }
+
+    const config = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      params: {
+        userId: userInfo.id,
+        query: searchQuery,
+      },
+    };
+
+    axios
+      .get(
+        `${apiBaseUrl}/api/learning_notes/search_learning_notes/`,
+        config
+      )
+      .then((response) => {
+        dispatch({
+          type: SEARCH_LEARNING_NOTE_SUCCESS,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: SEARCH_LEARNING_NOTE_FAILURE,
+          payload: error,
+        });
+        toast.error("Error during fetching learning notes.");
+      });
+  };
+};
+
+export const clearSearchedNotes = () => ({
+  type: CLEAR_SEARCHED_NOTES,
+});

@@ -2,6 +2,9 @@
 
 [Unreleased]
 
+## Added
+- Search bar for searching learning notes.
+
 ## [2.6.0] - 19-11-2024
 
 ### Added
