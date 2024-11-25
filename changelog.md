@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- Issue with loading icon still showing up after creating a new learning note successfully.
+
 ## [2.7.0] - 21-11-2024
 
 ### Added
