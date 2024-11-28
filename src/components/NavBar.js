@@ -127,7 +127,7 @@ export default function NavBar() {
             Learning Timeline
           </Typography>
 
-          {isSmallScreen ? (
+          {isSmallScreen && userInfo && (
             <>
               <IconButton color="inherit" onClick={openSearchDialog}>
                 <SearchIcon />
@@ -180,7 +180,9 @@ export default function NavBar() {
                 </DialogContent>
               </Dialog>
             </>
-          ) : (
+          )}
+
+          {!isSmallScreen && userInfo && (
             <Box
               sx={{
                 position: "relative",
