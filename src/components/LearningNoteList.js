@@ -1,18 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import { fetchLearningNotes } from "../actions/learningNoteActions";
 import LearningNoteCard from "./LearningNoteCard";
 import AddLearningNoteModal from "./AddLearningNoteModal";
-
-const LoadingIcon = () => {
-  return (
-    <div style={{ textAlign: "center", height: "10rem" }}>
-      {" "}
-      <CircularProgress />{" "}
-    </div>
-  );
-};
+import { LoadingIcon } from "./Icons";
 
 const LearningNoteList = () => {
   const dispatch = useDispatch();

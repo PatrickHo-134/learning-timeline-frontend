@@ -4,8 +4,10 @@ import {
   Card,
   CardActions,
   CardContent,
+  Checkbox,
   List,
   ListItem,
+  ListItemIcon,
   ListItemText,
   Modal,
   Typography,
@@ -13,6 +15,7 @@ import {
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { closeQuizModal } from "../../actions/quizActions";
+import { LoadingIcon } from "../Icons";
 
 const QuestionCard = ({ content, questionNumber, showAnswer }) => {
   const { question, options, answer } = content;
@@ -20,15 +23,22 @@ const QuestionCard = ({ content, questionNumber, showAnswer }) => {
     <Card sx={{ mb: 2 }}>
       <CardContent>
         <Typography variant="subtitle1" gutterBottom>
-          <strong>Q{questionNumber}:</strong> {question}
+          <strong>
+            Q{questionNumber}: {question}
+          </strong>
         </Typography>
+
         <List dense>
           {options.map((option, index) => (
             <ListItem key={index}>
+              <ListItemIcon>
+                <Checkbox edge="start" disableRipple />
+              </ListItemIcon>
               <ListItemText primary={option} />
             </ListItem>
           ))}
         </List>
+
         {showAnswer && (
           <Typography variant="body2" color="success.main" sx={{ mt: 1 }}>
             <strong>Answer:</strong> {answer}
@@ -39,17 +49,15 @@ const QuestionCard = ({ content, questionNumber, showAnswer }) => {
   );
 };
 
-export const QuizModal = () => {
+export const QuizModal = ({ showModal }) => {
   const dispatch = useDispatch();
-  const { isModalOpen, questions } = useSelector((state) => state.quiz);
+  const { questions, loading } = useSelector((state) => state.quiz);
   const [showAnswers, setShowAnswers] = useState(false);
 
   const handleClose = () => {
     dispatch(closeQuizModal());
     setShowAnswers(false);
   };
-
-  if (!isModalOpen) return null;
 
   const modalStyle = {
     position: "absolute",
@@ -66,12 +74,13 @@ export const QuizModal = () => {
   };
 
   return (
-    <Modal open={isModalOpen} onClose={handleClose}>
+    <Modal open={showModal} onClose={handleClose}>
       <Box sx={modalStyle}>
         <Typography
           id="questions-modal-title"
-          variant="h6"
+          variant="h4"
           component="h2"
+          sx={{ textAlign: "center" }}
           gutterBottom
         >
           Quiz
@@ -81,14 +90,38 @@ export const QuizModal = () => {
           id="questions-modal-description"
           sx={{ maxHeight: "40rem", overflowY: "auto" }}
         >
-          {questions.length === 0 ? (
-            <Typography variant="body1" color="text.secondary">
+          {!loading && questions.length === 0 ? (
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{ textAlign: "center", mb: 4 }}
+            >
               No questions available.
             </Typography>
           ) : (
             questions.map((q, index) => (
-              <QuestionCard key={index} content={q} questionNumber={index+1} showAnswer={showAnswers} />
+              <QuestionCard
+                key={index}
+                content={q}
+                questionNumber={index + 1}
+                showAnswer={showAnswers}
+              />
             ))
+          )}
+
+          {loading && (
+            <Box>
+              <Typography
+                id="questions-modal-title"
+                variant="h6"
+                component="h2"
+                sx={{ textAlign: "center", mb: 4 }}
+                gutterBottom
+              >
+                Generating quiz...
+              </Typography>
+              <LoadingIcon />
+            </Box>
           )}
         </Box>
 
@@ -99,13 +132,16 @@ export const QuizModal = () => {
             mt: 2,
           }}
         >
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setShowAnswers(true)}
-          >
-            Show Answers
-          </Button>
+          {!loading && questions.length > 0 && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setShowAnswers(true)}
+            >
+              Show Answers
+            </Button>
+          )}
+
           <Button variant="outlined" color="secondary" onClick={handleClose}>
             Close
           </Button>

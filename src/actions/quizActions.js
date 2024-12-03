@@ -4,6 +4,7 @@ import { apiBaseUrl } from "../appConfig";
 
 export const OPEN_QUIZ_MODAL = "OPEN_MODAL";
 export const CLOSE_QUIZ_MODAL = "CLOSE_MODAL";
+export const GENERATE_QUESTION_FAILURE = "GENERATE_QUESTION_FAILURE";
 export const SET_QUESTIONS = "SET_QUESTIONS";
 
 export const openQuizModal = () => ({ type: OPEN_QUIZ_MODAL });
@@ -35,9 +36,21 @@ export const generateQuizForNote = (note, userInfo) => async (dispatch) => {
   try {
     const responseData = await fetchQuiz(note, userInfo);
     dispatch(setQuestions(responseData.questions));
-    dispatch(openQuizModal());
   } catch (error) {
-    const errorMessage = error || "Error occurred while generating quiz";
+    let errorMessage = "Error occurred while generating quiz";
     toast.error(errorMessage);
+
+    if (error.response && error.response.data) {
+      errorMessage =
+        error.response.data.message ||
+        error.response.data.error ||
+        errorMessage;
+    } else if (error.message) {
+      errorMessage = error.message;
+    };
+
+    console.log(errorMessage);
+
+    dispatch({ type: GENERATE_QUESTION_FAILURE, payload: error });
   }
 };
