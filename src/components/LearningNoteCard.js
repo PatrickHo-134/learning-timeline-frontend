@@ -15,6 +15,7 @@ import {
   CardActions,
   Collapse,
   Grid,
+  Button,
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -36,6 +37,8 @@ import LabelSelectPopover from "./LabelSelectPopover";
 import LearningNoteLabel from "./LearningNoteLabel";
 import { ReadOnlyContent } from "./ReactQuill";
 import AddToCollectionModal from "./AddToCollectionModal";
+import { QuizModal } from "./quiz/quizModal";
+import { generateQuizForNote } from "../actions/quizActions";
 
 const calculateDaysSinceTimestamp = (timestamptz) => {
   const currentTimestamp = new Date();
@@ -245,6 +248,10 @@ const LearningNoteCard = ({ learningNote }) => {
     handleMenuClose();
   };
 
+  const handleGenerateQuestions = () => {
+    dispatch(generateQuizForNote(learningNote, userInfo));
+  };
+
   return (
     <Card sx={{ marginBottom: "1rem" }}>
       <CardContent>
@@ -254,7 +261,7 @@ const LearningNoteCard = ({ learningNote }) => {
               item
               sm={12}
               md={4}
-              lg={4}
+              lg={6}
               container
               justifyContent="flex-start"
               alignItems="center"
@@ -266,13 +273,14 @@ const LearningNoteCard = ({ learningNote }) => {
                 <InfoIcon />
               </IconButton>
               {noteCollectionInfo ? <CategoryTag tagName={noteCollectionInfo.name} /> : <div></div>}
+              <Button variant='outlined' onClick={handleGenerateQuestions}>Take Quiz</Button>
             </Grid>
 
             <Grid
               item
               sm={12}
               md={8}
-              lg={8}
+              lg={6}
               container
               justifyContent="flex-end"
               alignItems="center"
@@ -347,6 +355,8 @@ const LearningNoteCard = ({ learningNote }) => {
           onClose={() => setShowAddToCollectionModal(false)}
         />
       )}
+
+      <QuizModal />
     </Card>
   );
 };

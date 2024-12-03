@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- A button to generate quiz for a learning note.
+
 ## [2.8.0] - 03-12-2024
 
 ### Added
