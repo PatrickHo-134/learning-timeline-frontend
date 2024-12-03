@@ -5,6 +5,22 @@
 ### Added
 - Number of days since creation of a learning note.
 
+### Changed
+- Search bar to be hidden when user is not logged in
+
+### Fixed
+- Issue with loading icon still showing up after creating a new learning note successfully.
+
+## [2.7.0] - 21-11-2024
+
+### Added
+- Search bar for searching learning notes.
+
+## [2.6.0] - 19-11-2024
+
+### Added
+- Introduction of the application on landing page.
+
 ## [2.5.0] - 17-11-2024
 
 ### Removed
