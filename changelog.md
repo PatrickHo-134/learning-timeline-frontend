@@ -1,6 +1,8 @@
 # Changelog
 
-### [Unreleased]
+## [Unreleased]
+
+## [2.8.0] - 03-12-2024
 
 ### Added
 - Number of days since creation of a learning note.
