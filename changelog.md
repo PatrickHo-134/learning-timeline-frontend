@@ -1,6 +1,9 @@
 # Changelog
 
-## [Unreleased]
+### [Unreleased]
+
+### Added
+- Number of days since creation of a learning note.
 
 ### Changed
 - Search bar to be hidden when user is not logged in
