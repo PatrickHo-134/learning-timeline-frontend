@@ -5,6 +5,7 @@ import { labelListReducer } from './labelReducer';
 import { collectionListReducer } from './collectionReducer';
 import { pageFilterReducer } from './pageFilterReducer';
 import { LOGOUT } from '../actions/userActions';
+import QuizModalReducer from './quizReducer';
 
 const appReducer = combineReducers({
   learningNotes: learningNoteReducer,
@@ -13,6 +14,7 @@ const appReducer = combineReducers({
   labelList: labelListReducer,
   collectionList: collectionListReducer,
   pageFilter: pageFilterReducer,
+  quiz: QuizModalReducer,
 });
 
 const rootReducer = (state, action) => {

@@ -15,6 +15,7 @@ import {
   CardActions,
   Collapse,
   Grid,
+  Button,
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -36,6 +37,8 @@ import LabelSelectPopover from "./LabelSelectPopover";
 import LearningNoteLabel from "./LearningNoteLabel";
 import { ReadOnlyContent } from "./ReactQuill";
 import AddToCollectionModal from "./AddToCollectionModal";
+import { QuizModal } from "./quiz/quizModal";
+import { generateQuizForNote, openQuizModal } from "../actions/quizActions";
 
 const calculateDaysSinceTimestamp = (timestamptz) => {
   const currentTimestamp = new Date();
@@ -176,8 +179,7 @@ const InformationPopover = ({
 };
 
 const LearningNoteCard = ({ learningNote }) => {
-  const { id, created_at, title, content, updated_at, labels, collection } =
-    learningNote;
+  const { id, created_at, title, content, updated_at, labels, collection } = learningNote;
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddToCollectionModal, setShowAddToCollectionModal] = useState(false);
@@ -189,6 +191,7 @@ const LearningNoteCard = ({ learningNote }) => {
   const labelList = useSelector((state) => state.labelList.labels);
   const collectionList = useSelector((state) => state.collectionList.collections);
   const noteCollectionInfo = collectionList.filter((collection) => collection.id === learningNote.collection)[0];
+  const showQuizModal = useSelector((state) => state.quiz.isModalOpen);
 
   const dispatch = useDispatch();
 
@@ -245,6 +248,11 @@ const LearningNoteCard = ({ learningNote }) => {
     handleMenuClose();
   };
 
+  const handleGenerateQuestions = () => {
+    dispatch(openQuizModal());
+    dispatch(generateQuizForNote(learningNote, userInfo));
+  };
+
   return (
     <Card sx={{ marginBottom: "1rem" }}>
       <CardContent>
@@ -254,7 +262,7 @@ const LearningNoteCard = ({ learningNote }) => {
               item
               sm={12}
               md={4}
-              lg={4}
+              lg={6}
               container
               justifyContent="flex-start"
               alignItems="center"
@@ -272,7 +280,7 @@ const LearningNoteCard = ({ learningNote }) => {
               item
               sm={12}
               md={8}
-              lg={8}
+              lg={6}
               container
               justifyContent="flex-end"
               alignItems="center"
@@ -305,6 +313,18 @@ const LearningNoteCard = ({ learningNote }) => {
 
         <Collapse in={isContentVisible} timeout="auto">
           <ReadOnlyContent content={content} />
+          <Box
+            component="section"
+            sx={{ margin: 1 }}
+          >
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleGenerateQuestions}
+            >
+              Take Quiz
+            </Button>
+          </Box>
         </Collapse>
       </CardContent>
 
@@ -347,6 +367,8 @@ const LearningNoteCard = ({ learningNote }) => {
           onClose={() => setShowAddToCollectionModal(false)}
         />
       )}
+
+      {showQuizModal && <QuizModal showModal={showQuizModal} />}
     </Card>
   );
 };
