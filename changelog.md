@@ -4,6 +4,7 @@
 
 ### Added
 - A button to generate quiz for a learning note.
+- Loading screen to block UI while a page is loading.
 
 ## [2.8.0] - 03-12-2024
 
