@@ -6,6 +6,7 @@ import CollectionList from "./CollectionList";
 import LearningNoteList from "./LearningNoteList";
 import LabelList from "./LabelList";
 import { fetchCollections } from "../actions/collectionActions";
+import { PageLoadingIndicator } from "./Icons";
 
 const Main = () => {
   const theme = useTheme();
@@ -28,6 +29,7 @@ const Main = () => {
 
   return (
     <div style={{ padding: "1rem" }}>
+      <PageLoadingIndicator />
       <Grid container spacing={2}>
         {isLargeScreen && (
           <Grid item lg={2}>

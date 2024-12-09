@@ -4,7 +4,7 @@ import { Container } from "@mui/material";
 import { fetchLearningNotes } from "../actions/learningNoteActions";
 import LearningNoteCard from "./LearningNoteCard";
 import AddLearningNoteModal from "./AddLearningNoteModal";
-import { LoadingIcon } from "./Icons";
+import { LinearIndeterminate } from "./Icons";
 
 const LearningNoteList = () => {
   const dispatch = useDispatch();
@@ -99,7 +99,7 @@ const LearningNoteList = () => {
         ))
       )}
 
-      {loading && <LoadingIcon />}
+      {loading && <LinearIndeterminate />}
     </Container>
   );
 };

@@ -3,6 +3,7 @@ import { apiBaseUrl } from "../appConfig";
 import { RESET_COLLECTIONS } from "./collectionActions";
 import { RESET_LABELS } from "./labelActions";
 import { CLEAR_LEARNING_NOTES } from "./learningNoteActions";
+import { startLoading, stopLoading } from "./pageControlActions";
 
 // user login
 
@@ -40,11 +41,11 @@ export const login = (email, password) => {
       );
 
       dispatch(loginSuccess(response.data));
-
+      dispatch(startLoading());
       localStorage.setItem("userInfo", JSON.stringify(response.data));
     } catch (error) {
-      // Dispatch loginFailure action if login fails
       dispatch(loginFailure("Login failed. Please try again."));
+      dispatch(stopLoading());
     }
   };
 };
@@ -74,6 +75,7 @@ export const REGISTER_FAILURE = "REGISTER_FAILURE";
 export const register = (firstName, lastName, email, password) => {
   return async (dispatch) => {
     dispatch({ type: REGISTER_REQUEST });
+    dispatch(startLoading());
 
     try {
       const response = await axios.post(
@@ -86,10 +88,11 @@ export const register = (firstName, lastName, email, password) => {
         payload: response.data,
       });
 
-      dispatch(loginSuccess(response.data)); // we need this to store the data in userLogin
-
+      dispatch(loginSuccess(response.data));
       localStorage.setItem("userInfo", JSON.stringify(response.data));
+      dispatch(stopLoading());
     } catch (error) {
+      dispatch(stopLoading());
       dispatch({
         type: REGISTER_FAILURE,
         payload: error,
