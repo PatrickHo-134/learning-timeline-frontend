@@ -1,6 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { apiBaseUrl } from "../appConfig";
+import { startLoading, stopLoading } from "./pageControlActions";
 
 export const CLEAR_LEARNING_NOTES = "CLEAR_LEARNING_NOTES";
 
@@ -59,18 +60,21 @@ export const fetchLearningNotes = (pageNumber = 1, selectedCategory, selectedLab
     };
 
     dispatch(fetchLearningNotesRequest());
+    dispatch(startLoading());
 
     axios
       .get(`${apiBaseUrl}/api/timeline/${userInfo.id}/`, config)
       .then((response) => {
         const learningNotes = response.data;
         dispatch(fetchLearningNotesSuccess(learningNotes));
+        dispatch(stopLoading());
       })
       .catch((error) => {
         const errorMessage =
           error?.response?.data?.error ||
           "Error occurred while loading learning notes";
         dispatch(fetchLearningNotesFailure(errorMessage));
+        dispatch(stopLoading());
         toast.error(errorMessage);
       });
   };
@@ -105,6 +109,8 @@ export const createLearningNote = (newLearningNote, userInfo) => {
 
   return (dispatch) => {
     dispatch(createLearningNoteRequest());
+    dispatch(startLoading());
+
     axios
       .post(`${apiBaseUrl}/api/learning_notes/create/${id}/`, newLearningNote, {
         headers: headers,
@@ -112,6 +118,7 @@ export const createLearningNote = (newLearningNote, userInfo) => {
       .then((response) => {
         const createdLearningNote = response.data;
         dispatch(createLearningNoteSuccess(createdLearningNote));
+        dispatch(stopLoading());
         toast.success("Note added successfully");
       })
       .catch((response) => {
@@ -119,6 +126,7 @@ export const createLearningNote = (newLearningNote, userInfo) => {
           response?.response?.data?.error ||
           "Failed to create new note. Please try again.";
         dispatch(createLearningNoteFailure(errorMessage));
+        dispatch(stopLoading());
         toast.error(errorMessage);
       });
   };
@@ -245,6 +253,8 @@ export const updateLearningNote = (noteId, data, userInfo) => {
 
   return (dispatch) => {
     dispatch(updateLearningNoteRequest());
+    dispatch(startLoading());
+
     axios
       .patch(`${apiBaseUrl}/api/learning_notes/update/${noteId}/`, data, {
         headers: headers,
@@ -252,12 +262,14 @@ export const updateLearningNote = (noteId, data, userInfo) => {
       .then((response) => {
         const updatedLearningNote = response.data;
         dispatch(updateLearningNoteSuccess(updatedLearningNote));
+        dispatch(stopLoading());
         toast.success("Note updated successfully!");
       })
       .catch((response) => {
         const errorMessage =
           response?.response?.data?.error || "Failed to update note";
         dispatch(updateLearningNoteFailure(errorMessage));
+        dispatch(stopLoading());
         toast.error(errorMessage);
       });
   };
