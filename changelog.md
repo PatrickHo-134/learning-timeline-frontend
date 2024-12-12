@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.0.0] - 13-12-2024
+
 ### Added
 - A button to generate quiz for a learning note.
 - Loading screen to block UI while a page is loading.
