@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+## [3.0.1] - 19-12-2024
+- Issue with generating quiz for learning notes.
+
 ## [3.0.0] - 13-12-2024
 
 ### Added
