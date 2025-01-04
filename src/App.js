@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
-import LandingPage from "./components/LandingPage";
+import LandingPage from "./components/landing_page/LandingPage";
 import Main from "./components/Main";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
