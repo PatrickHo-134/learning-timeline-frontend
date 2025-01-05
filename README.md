@@ -58,6 +58,14 @@ The Learning Timeline App comes with a variety of features designed to enhance t
 - Users can search for learning notes based on title, content, labels, or collections.
 - Advanced filtering options allow users to sort their notes by different criteria, such as creation date, last updated, or labels.
 
+### 10. AI-Powered Revision Quizzes
+- The app leverages AI to generate personalized revision quizzes based on the content of your learning notes.
+- Users can take quizzes to reinforce their knowledge and identify areas that need further review.
+- The AI analyzes the notes and creates questions that are tailored to the user's learning material.
+- Quizzes can include multiple-choice questions, true/false questions, and short answer questions.
+- Users receive instant feedback on their quiz performance, helping them track their progress and focus on weak areas.
+- This feature aims to enhance the learning experience by providing an interactive and engaging way to review and retain information.
+
 ## Prerequisites
 - Node.js (v14.x or higher) and npm (or yarn) installed
 
