@@ -2,7 +2,14 @@
 
 ## [Unreleased]
 
+## [3.1.0] - 06-01-2025
+
+### Added
+- Slides of features demonstration on landing page.
+
 ## [3.0.1] - 19-12-2024
+
+### Fixed
 - Issue with generating quiz for learning notes.
 
 ## [3.0.0] - 13-12-2024

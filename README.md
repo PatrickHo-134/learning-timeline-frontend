@@ -1,4 +1,4 @@
-# Learning Timeline - Frontend
+# Learning Timeline - Frontend [3.1.0]
 
 The **Learning Timeline App** is a full-stack web application designed to help users create, organize, and archive learning notes, promoting efficient self-paced learning and personal development. The project is built using modern web technologies like **React.js** and **Redux** on the frontend, and it communicates with a backend API developed with **Python** and **Django**.
 
