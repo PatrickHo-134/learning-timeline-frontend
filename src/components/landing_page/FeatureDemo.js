@@ -55,7 +55,7 @@ const FeatureDemo = () => {
             alt="main-timeline-image"
             loading="lazy"
             sx={{
-              width: "50rem",
+              width: "70rem",
             }}
           />
         </Carousel.Item>
